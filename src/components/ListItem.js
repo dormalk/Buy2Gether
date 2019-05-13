@@ -28,12 +28,12 @@ class ListItem extends React.Component{
             onPress: this.props.onItemDelete.bind(this,this.props.ukey)
         }];
         return(
-            <Swipper buttons={btns} numOfBtns={1}>
-                <TouchableOpacity onPress={this.props.onEditPress.bind(this)}>
-                    <CardSection style={cardSectionStyle}>
+            <Swipper buttons={btns} numOfBtns={1} >
+                <CardSection style={cardSectionStyle}>
+                    <TouchableOpacity onPress={this.props.onEditPress.bind(this)}>
                         <Text style={textStyle}>{this.props.title}</Text>
-                    </CardSection>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </CardSection>
             </Swipper>
        )
     }
@@ -44,8 +44,9 @@ const styles = {
     textStyle:{
         flex: 2,
         fontSize: 22,
-        alignSelf:'stretch',
-        textAlign:'left'
+        textAlign:'left',
+        paddingLeft: 20,
+        paddingRight: 20
     },
     cardSectionStyle:{
         flexDirection: 'row',

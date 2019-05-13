@@ -12,11 +12,11 @@ const RouterComponent = () => {
     return(
         <Router>
             <Scene key="root" hideNavBar>
-                <Scene key="auth" hideNavBar>
+                <Scene key="auth" navigationBarStyle={{ backgroundColor: 'green', height: 0 }}>
                     <Scene key="login" component={LoginForm} initial/>
                     <Scene key="ragister" component={RagisterForm}/>
                 </Scene>
-                <Scene key="main" hideNavBar>
+                <Scene key="main"  navigationBarStyle={{ backgroundColor: 'green', height: 0 }}>
                     <Scene key="listpage" component={ListsPage}/>
                     <Scene key="listview" component={ListView}/>
                     <Scene key="createlist" component={CreateList}/>

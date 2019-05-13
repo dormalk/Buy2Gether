@@ -87,7 +87,7 @@ class EditList extends React.Component{
                 <NevMenu/>
                 <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={0}>
                     <ScrollView> 
-                        <Card>
+                        <Card style={{marginBotoom:70}}>
                             <CardSection style={cardSectionStyle}>
                                 <Text style={titleStyle}>ערוך רשימה</Text>
                             </CardSection>
