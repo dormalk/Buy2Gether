@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19003,
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 13932,
-  "expoServerNgrokUrl": "https://fn-2ct.dormalk.buy2gether2.exp.direct",
-  "packagerNgrokUrl": "https://packager.fn-2ct.dormalk.buy2gether2.exp.direct",
-  "ngrokPid": 9976,
+  "packagerPid": 21436,
+  "expoServerNgrokUrl": "https://fn-2ct.dormalk.buy2gether.exp.direct",
+  "packagerNgrokUrl": "https://packager.fn-2ct.dormalk.buy2gether.exp.direct",
+  "ngrokPid": 19132,
   "webpackServerPort": null
 }

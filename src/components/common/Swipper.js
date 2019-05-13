@@ -23,7 +23,6 @@ class Swipper extends React.Component<Props>{
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (event,getsureState) => true,
             onPanResponderMove: (event,getsureState) => {
-                console.warn(getsureState);
                 this.setState({release: true});
                 if(getsureState.dy < this.panDiff && getsureState.dy > -this.panDiff){
                     if(!this.isOpen && getsureState.dx > 0 && getsureState.dx < this.max){

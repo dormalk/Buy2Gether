@@ -7,16 +7,17 @@ import ListsPage from './components/ListsPage';
 import ListView from './components/ListView';
 import EditList from './components/EditList';
 import {View,Text} from 'react-native';
+import { RegularButton } from './components/common';
 
 const RouterComponent = () => {
     return(
         <Router>
             <Scene key="root" hideNavBar>
-                <Scene key="auth" navigationBarStyle={{ backgroundColor: 'green', height: 0 }}>
+                <Scene key="auth" navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}}>
                     <Scene key="login" component={LoginForm} initial/>
                     <Scene key="ragister" component={RagisterForm}/>
                 </Scene>
-                <Scene key="main"  navigationBarStyle={{ backgroundColor: 'green', height: 0 }}>
+                <Scene key="main"  navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0,opacity:0}}>
                     <Scene key="listpage" component={ListsPage}/>
                     <Scene key="listview" component={ListView}/>
                     <Scene key="createlist" component={CreateList}/>

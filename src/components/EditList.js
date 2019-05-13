@@ -81,13 +81,13 @@ class EditList extends React.Component{
         Actions.listpage()
     }
     render(){
-        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle} = styles;
+        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle} = styles;
         return(
             <View>
                 <NevMenu/>
-                <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={0}>
+                <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={30}>
                     <ScrollView> 
-                        <Card style={{marginBotoom:70}}>
+                        <Card>
                             <CardSection style={cardSectionStyle}>
                                 <Text style={titleStyle}>ערוך רשימה</Text>
                             </CardSection>
@@ -101,13 +101,12 @@ class EditList extends React.Component{
                             <View>
                                 {this.renderList()}
                             </View>
-                            <CardSection style={cardSectionStyle}>
-                                <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
-                                    <Text style={plusStyle}>+</Text>
-                                </TouchableOpacity>
-                            </CardSection>
-
-                            <CardSection>
+                            <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
+                                <CardSection style={plusSectionStyle}>
+                                        <Text style={plusStyle}>+</Text>
+                                </CardSection>
+                            </TouchableOpacity>
+                            <CardSection style={{marginBottom:130}}>
                                 <RegularButton
                                     externButtonStyle={whiteButtonStyle}
                                     externTextStyle={{color:DARK_GREEN}}
@@ -134,11 +133,17 @@ class EditList extends React.Component{
 const styles = {
     plusStyle: {
         alignSelf: 'center',
-        color: DARK_GREEN,
-        fontSize: 35,
+        color: WHITE,
+        fontSize: 30,
         fontWeight: '800',
-        paddingTop: 10,
-        paddingBottom: 10
+        paddingTop: 5,
+        paddingBottom: 5
+    },
+    plusSectionStyle:{
+        backgroundColor: DARK_GREEN,
+        justifyContent: 'center',
+        marginTop: 2,
+        marginBottom: 2,
     },
     titleStyle: {
         alignSelf: 'center',
