@@ -49,7 +49,8 @@ class EditList extends React.Component{
     }
 
     onListTitleChanged(title){
-        this.setState({title})
+        if(title.length <= 15)
+            this.setState({title})
     }
 
     onItemUpdate(index,{title,quantity,comment}){
@@ -81,7 +82,7 @@ class EditList extends React.Component{
         Actions.listpage()
     }
     render(){
-        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle} = styles;
+        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle,TitleTextInputStyle,TitleInputContainerStyle} = styles;
         return(
             <View>
                 <NevMenu/>
@@ -96,6 +97,8 @@ class EditList extends React.Component{
                                     placeholder="שם הרשימה"
                                     value={this.state.title}
                                     onChangeText={this.onListTitleChanged.bind(this)}
+                                    ViewContainerStyle={TitleInputContainerStyle}
+                                    TextInputStyle={TitleTextInputStyle}
                                 />
                             </CardSection>
                             <View>
@@ -133,14 +136,14 @@ class EditList extends React.Component{
 const styles = {
     plusStyle: {
         alignSelf: 'center',
-        color: WHITE,
+        color: DARK_GREEN,
         fontSize: 30,
         fontWeight: '800',
         paddingTop: 5,
         paddingBottom: 5
     },
     plusSectionStyle:{
-        backgroundColor: DARK_GREEN,
+        backgroundColor: WHITE,
         justifyContent: 'center',
         marginTop: 2,
         marginBottom: 2,
@@ -164,6 +167,18 @@ const styles = {
     darkButtonStyle:{
         backgroundColor:DARK_GREEN,
         borderColor:DARK_GREEN
+    },
+    TitleInputContainerStyle:{
+        alignSelf:'stretch',
+        justifyContent: 'center',
+        flexDirection: 'column'
+    },
+    TitleTextInputStyle:{
+        backgroundColor: 'white',
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginTop: 10,
+        width: 200
     }
 }
 

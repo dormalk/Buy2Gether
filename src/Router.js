@@ -13,11 +13,11 @@ const RouterComponent = () => {
     return(
         <Router>
             <Scene key="root" hideNavBar>
-                <Scene key="auth" navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}}>
+                <Scene key="auth" navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}} renderBackButton={() => (null)}  renderLeftButton={()=>(null)}>
                     <Scene key="login" component={LoginForm} initial/>
                     <Scene key="ragister" component={RagisterForm}/>
                 </Scene>
-                <Scene key="main"  navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0,opacity:0}}>
+                <Scene key="main"  navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}} renderBackButton={() => (null)} renderLeftButton={()=>(null)}>
                     <Scene key="listpage" component={ListsPage}/>
                     <Scene key="listview" component={ListView}/>
                     <Scene key="createlist" component={CreateList}/>

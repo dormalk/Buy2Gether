@@ -12,7 +12,7 @@ const Confirm = ({children,visible,onAccept,onDecline}) => {
             visible={visible}
             transparent
             animationType="slide"
-            onRequestClose = {() => {alert('Modal is closed')}}
+            onRequestClose = {onDecline}
         >
             <View style={containerStyle}>
                 <CardSection style={cardSectionStyle}>

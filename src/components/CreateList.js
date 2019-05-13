@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text,TouchableOpacity,ScrollView} from 'react-native';
+import {View,Text,TouchableOpacity,ScrollView,KeyboardAvoidingView} from 'react-native';
 import {Card,CardSection,RegularButton,Input,Confirm} from './common';
 import { DARK_GREEN,DARK,WHITE } from './StyleConfig';
 import ItemListRouting from './ItemListRouting';
@@ -34,17 +34,24 @@ class CreateList extends React.Component{
         )
     }
     onPlusPressed(){
+        const vitems = this.state.items.map((value) => {
+            var it = {...value, isOpen:false};
+            return it;
+        });
         const item = {
-            title: '',
+            title: ' ',
             quantity: 0,
             comment: '',
-            checked: false
+            checked: false,
+            isOpen: true
         }
-        this.setState({items: [...this.state.items,item]});
+        
+        this.setState({items: [...vitems,item]});
     }
 
     onListTitleChanged(title){
-        this.setState({title})
+        if(title.length <= 15)
+            this.setState({title})
     }
 
     onItemUpdate(index,{title,quantity,comment}){
@@ -82,49 +89,52 @@ class CreateList extends React.Component{
         Actions.listpage()
     }
     render(){
-        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle} = styles;
+        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle} = styles;
         return(
             <View>
                 <NevMenu/>
-                <ScrollView style={{marginBottom:70}}> 
-                <Card>
-                    <CardSection style={cardSectionStyle}>
-                            <Text style={titleStyle}>צור רשימה חדשה</Text>
-                        </CardSection>
-                        <CardSection>
-                            <Input
-                                placeholder="שם הרשימה"
-                                value={this.state.title}
-                                onChangeText={this.onListTitleChanged.bind(this)}
-                            />
-                        </CardSection>
-
-                        {this.renderList()}
-
+                <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={30}>
+                    <ScrollView> 
+                    <Card>
                         <CardSection style={cardSectionStyle}>
-                            <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
-                                <Text style={plusStyle}>+</Text>
-                            </TouchableOpacity>
-                        </CardSection>
+                                <Text style={titleStyle}>צור רשימה חדשה</Text>
+                            </CardSection>
+                            <CardSection>
+                                <Input
+                                    placeholder="שם הרשימה"
+                                    value={this.state.title}
+                                    onChangeText={this.onListTitleChanged.bind(this)}
+                                    ViewContainerStyle={TitleInputContainerStyle}
+                                    TextInputStyle={TitleTextInputStyle}
+                                />
+                            </CardSection>
 
-                        <CardSection>
-                            <RegularButton
-                                externButtonStyle={whiteButtonStyle}
-                                externTextStyle={{color:DARK_GREEN}}
-                                onPress={this.onChangeShowModal.bind(this)}
-                            >
-                                מחק
-                            </RegularButton>
-                            <RegularButton
-                                externButtonStyle={darkButtonStyle}
-                                externTextStyle={{color:WHITE}}
-                                onPress={this.onSaveList.bind(this)}
-                            >
-                                שמור
-                            </RegularButton>
-                        </CardSection>
-                    </Card>
-                </ScrollView>
+                            {this.renderList()}
+                            <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
+                                <CardSection style={plusSectionStyle}>
+                                        <Text style={plusStyle}>+</Text>
+                                </CardSection>
+                            </TouchableOpacity>
+
+                            <CardSection style={{marginBottom:130}}>
+                                <RegularButton
+                                    externButtonStyle={whiteButtonStyle}
+                                    externTextStyle={{color:DARK_GREEN}}
+                                    onPress={this.onChangeShowModal.bind(this)}
+                                >
+                                    מחק
+                                </RegularButton>
+                                <RegularButton
+                                    externButtonStyle={darkButtonStyle}
+                                    externTextStyle={{color:WHITE}}
+                                    onPress={this.onSaveList.bind(this)}
+                                >
+                                    שמור
+                                </RegularButton>
+                            </CardSection>
+                        </Card>
+                    </ScrollView>
+                </KeyboardAvoidingView>
                 <Confirm
                     visible={this.state.showModal}
                     onAccept={this.onAcceptModal.bind(this)}
@@ -141,10 +151,16 @@ const styles = {
     plusStyle: {
         alignSelf: 'center',
         color: DARK_GREEN,
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: '800',
-        paddingTop: 10,
-        paddingBottom: 10
+        paddingTop: 5,
+        paddingBottom: 5
+    },
+    plusSectionStyle:{
+        backgroundColor: WHITE,
+        justifyContent: 'center',
+        marginTop: 2,
+        marginBottom: 2,
     },
     titleStyle: {
         alignSelf: 'center',
@@ -165,6 +181,18 @@ const styles = {
     darkButtonStyle:{
         backgroundColor:DARK_GREEN,
         borderColor:DARK_GREEN
+    },
+    TitleInputContainerStyle:{
+        alignSelf:'stretch',
+        justifyContent: 'center',
+        flexDirection: 'column'
+    },
+    TitleTextInputStyle:{
+        backgroundColor: 'white',
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginTop: 10,
+        width: 200
     }
 }
 

@@ -13,7 +13,7 @@ class ListItemEditable extends React.Component{
     }
 
     onTitleChange(title){
-        if(title.length < 10){
+        if(title.length < 16){
             this.setState({title});
             if(title == '') title = ' ';
             const update = {
