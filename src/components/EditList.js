@@ -30,7 +30,11 @@ class EditList extends React.Component{
                 onItemDelete={this.onItemDelete.bind(this)}/>
                 );
         });
-        return itemsList
+        return(
+            <CardSection style={styles.listSectionStyle}>
+                {itemsList}
+            </CardSection>
+        )
     }
     onPlusPressed(){
         const vitems = this.state.items.map((value) => {
@@ -101,9 +105,7 @@ class EditList extends React.Component{
                                     TextInputStyle={TitleTextInputStyle}
                                 />
                             </CardSection>
-                            <View>
                                 {this.renderList()}
-                            </View>
                             <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
                                 <CardSection style={plusSectionStyle}>
                                         <Text style={plusStyle}>+</Text>

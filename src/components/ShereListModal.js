@@ -17,7 +17,6 @@ class ShereListModal extends React.Component{
         this.setState({email});
     }
     onSendRequest(){
-        console.log('shere proccess');
         if(this.state.email != this.props.email){
             this.props.shereList(this.state.email,this.props.value.key)
         }
@@ -45,7 +44,7 @@ class ShereListModal extends React.Component{
                 visible={this.state.visible}
                 transparent
                 animationType="slide"
-                onRequestClose = {() => {alert('Modal is closed')}}
+                onRequestClose = {() => {this.setState({visible: !this.state.visible})}}
 
             >
             <View style = {containerStyle}>

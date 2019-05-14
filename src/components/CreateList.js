@@ -89,7 +89,7 @@ class CreateList extends React.Component{
         Actions.listpage()
     }
     render(){
-        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle} = styles;
+        const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle,TitleTextInputStyle,TitleInputContainerStyle} = styles;
         return(
             <View>
                 <NevMenu/>
