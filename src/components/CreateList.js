@@ -25,6 +25,7 @@ class CreateList extends React.Component{
                 key={val} 
                 ukey={val++} 
                 onItemUpdate={this.onItemUpdate.bind(this)}
+                onPlusPressed={this.onPlusPressed.bind(this)}
                 onItemDelete={this.onItemDelete.bind(this)}/>
                 );
         return(
@@ -34,12 +35,13 @@ class CreateList extends React.Component{
         )
     }
     onPlusPressed(){
-        const vitems = this.state.items.map((value) => {
+        var vitems = this.state.items.map((value) => {
             var it = {...value, isOpen:false};
             return it;
         });
+        vitems = vitems.filter(value => value.title.length > 0 || value.isOpen == true);
         const item = {
-            title: ' ',
+            title: '',
             quantity: 0,
             comment: '',
             checked: false,

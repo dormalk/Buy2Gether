@@ -27,7 +27,8 @@ class EditList extends React.Component{
                 key={val} 
                 ukey={val++} 
                 onItemUpdate={this.onItemUpdate.bind(this)}
-                onItemDelete={this.onItemDelete.bind(this)}/>
+                onItemDelete={this.onItemDelete.bind(this)}
+                onPlusPressed={this.onPlusPressed.bind(this)}/>
                 );
         });
         return(
@@ -37,12 +38,13 @@ class EditList extends React.Component{
         )
     }
     onPlusPressed(){
-        const vitems = this.state.items.map((value) => {
+        var vitems = this.state.items.map((value) => {
             var it = {...value, isOpen:false};
             return it;
         });
+        vitems = vitems.filter(value => value.title.length > 0 || value.isOpen == true);
         const item = {
-            title: ' ',
+            title: '',
             quantity: 0,
             comment: '',
             checked: false,
@@ -66,7 +68,7 @@ class EditList extends React.Component{
     onItemDelete(index){
         var items = this.state.items;
         var val = 0;
-        items = items.filter(() => index!==val++);
+        items = items.filter(() => index !== val++);
         this.setState({items:[...items]}); 
     }
 

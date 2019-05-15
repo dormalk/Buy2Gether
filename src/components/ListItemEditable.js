@@ -7,7 +7,7 @@ import { WHITE } from './StyleConfig';
 class ListItemEditable extends React.Component{
 
     state = {
-        title: this.props.title == ' ' ?  '' : this.props.title,
+        title: this.props.title || '',
         quantity: this.props.quantity || '',
         comment: this.props.comment || '',
     }
@@ -15,12 +15,11 @@ class ListItemEditable extends React.Component{
     onTitleChange(title){
         if(title.length < 16){
             this.setState({title});
-            if(title == '') title = ' ';
             const update = {
                 ...this.state,
                 title
             }
-            this.props.onItemUpdate(this.props.ukey,update);    
+            this.props.onItemUpdate(this.props.ukey,update);
         }
     }
 
@@ -43,7 +42,9 @@ class ListItemEditable extends React.Component{
             this.props.onItemUpdate(this.props.ukey,update);
         }
     }
-
+    generateButtonLable(){
+        return this.state.title.length == 0? "סגור" : "אישור";
+    }
     render(){
         const {title, quantity,comment} = this.state;
         const { cardSectionStyle,inputStyle,closeButtonStyle } = styles;
@@ -84,7 +85,7 @@ class ListItemEditable extends React.Component{
                         externButtonStyle={styles.applyButtonStyle}
                         externTextStyle={{color:WHITE}}
                     >
-                        אישור
+                        {this.generateButtonLable()}
                     </RegularButton>
                 </CardSection>
             </CardSection>

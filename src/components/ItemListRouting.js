@@ -15,6 +15,8 @@ class ItemListRouting extends React.Component{
         if(this.double || this.state.isOpen){
             this.setState({isOpen: !this.state.isOpen})
             this.double = false;
+            if(this.props.title.length == 0) this.props.onItemDelete(this.props.ukey);
+            else this.props.onPlusPressed();
         }
         else this.double = true;
         //setTimeout(() => this.double = false,500);
