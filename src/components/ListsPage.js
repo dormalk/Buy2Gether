@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View,Text,ScrollView} from 'react-native';
+import {View,Text,ScrollView,Linking} from 'react-native';
 import {Card,CardSection,Spinner} from './common';
 import NevMenu from './NevMenu';
-import {fatchList,resetLists,fatchSheredList} from '../actions';
+import {fatchList,resetLists,fatchSheredList,agreeShereList} from '../actions';
 import ItemList from './ItemList';
 
 
@@ -23,6 +23,17 @@ class ListsPage extends React.Component{
         super(props);
         props.resetLists();
     }
+
+    componentDidMount(){
+        Linking.getInitialURL().then((url) => {
+            if (url) {
+                let { queryParams } = Expo.Linking.parse(url);
+                if(queryParams.listId)
+                    this.props.agreeShereList(queryParams.listId);
+            }
+        }).catch(err => console.error('An error occurred', err));
+    }
+
     componentWillUpdate(nextProps,nextState){
 
         if(nextProps.ulist.length != nextState.userlist.length){
@@ -145,4 +156,4 @@ const styles = {
     }
 }
 
-export default connect(mapStateToProps,{fatchList,resetLists,fatchSheredList})(ListsPage);
+export default connect(mapStateToProps,{fatchList,resetLists,fatchSheredList,agreeShereList})(ListsPage);

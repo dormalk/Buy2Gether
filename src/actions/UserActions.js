@@ -9,6 +9,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import '@firebase/database';
 import {Actions} from 'react-native-router-flux';
+import {isLogin} from './AuthActions';
 
 
 export const createUser = ({email}) => {
@@ -61,6 +62,29 @@ export const fatchUser = () => {
             })
     }
 }
+
+export const agreeShereList = (uniqListKey) => {
+    return () => {
+        const {currentUser} = firebase.auth();
+        if(currentUser){
+            return firebase.database().ref(`users/${currentUser.uid}/slist`)
+            .once('value',snapshot => {
+                var array = [];
+                if(!!snapshot.val()){
+                    array = snapshot.val();
+                }
+                if(!array.includes(uniqListKey)){
+                    array = [...array, uniqListKey];
+                    firebase.database().ref(`users/${currentUser.uid}/slist`)
+                    .set(array);
+                    return true;    
+                }
+            })
+        }
+        else return false;        
+    }
+}
+
 
 export const shereList = (email,uniqListKey) => {
     return() => {

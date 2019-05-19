@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View,Text,TouchableWithoutFeedback} from 'react-native';
+import {View,Text,TouchableWithoutFeedback,Share,Linking} from 'react-native';
 import {CardSection,ImageButton,Confirm} from './common';
-import {removeList,updateUlistUser,updateSlistUser} from '../actions';
+import {removeList,updateUlistUser,updateSlistUser,agreeShereList} from '../actions';
 import {Actions} from 'react-native-router-flux';
 import ShereListModal from './ShereListModal';
 
@@ -11,6 +11,16 @@ class ItemList extends React.Component{
     state = {
         showModal: false,
         showModal2: false
+    }
+
+    componentDidMount(){
+        Linking.addEventListener('url',() => {
+            const initialUrl = Linking.getInitialURL();
+            console.warn(initialUrl);
+            let { path, queryParams } = Expo.Linking.parse(initialUrl);
+            if(queryParams.listId)
+                this.props.agreeShereList(queryParams.listId);
+        })
     }
     onRemoveRequest(key) {
         if(!this.props.shered){
@@ -38,7 +48,19 @@ class ItemList extends React.Component{
     }
 
     onShereRquest(){
-        this.setState({showModal2:true});
+        //this.setState({showModal2:true});
+        Share.share({
+            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + Expo.Linking.makeUrl('',{listId:this.props.value.key}),
+            url: Expo.Linking.makeUrl('',{listId:this.props.value.key}),
+            title: 'קונים ביחד - אפליקציית קניות חברתית',
+          })
+          .then((result) =>{
+            console.log(result)
+              if(result === 'dismissedAction'){
+                return
+              }
+          })
+          .catch((error) => console.log(error));
     }
     onRenderButtons(){
         if(!this.props.shered){
@@ -136,4 +158,4 @@ const mapStartToProps = ({user}) => {
     const {ulist,slist} = user;
     return {ulist,slist};
 }
-export default connect(mapStartToProps,{removeList,updateUlistUser,updateSlistUser})(ItemList);
+export default connect(mapStartToProps,{removeList,updateUlistUser,updateSlistUser,agreeShereList})(ItemList);

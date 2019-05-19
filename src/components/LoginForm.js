@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text} from 'react-native';
 import {Card,CardSection,Input,RegularButton,Spinner,Link, Welcoming} from './common';
-import { emailChanged,passwordChanged,loginUser,isLogin } from '../actions/AuthActions';
+import { emailChanged,passwordChanged,loginUser,isLogin,agreeShereList } from '../actions';
 import { connect } from 'react-redux';
 import {DARK_GREEN,WHITE} from './StyleConfig';
 import {Actions} from 'react-native-router-flux';
@@ -151,4 +151,4 @@ const mapStateToProps = ({auth}) =>{
     const {email,password,error,loading,confirm} = auth;
     return {email,password,error,loading,confirm};
 }
-export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser,isLogin})(LoginForm);
+export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser,isLogin,agreeShereList})(LoginForm);

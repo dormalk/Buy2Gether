@@ -14,14 +14,14 @@ const RouterComponent = () => {
         <Router>
             <Scene key="root" hideNavBar>
                 <Scene key="auth" navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}} renderBackButton={() => (null)}  renderLeftButton={()=>(null)}>
-                    <Scene key="login" component={LoginForm} initial/>
-                    <Scene key="ragister" component={RagisterForm}/>
+                    <Scene key="login" duration={0} component={LoginForm} initial/>
+                    <Scene key="ragister" duration={0} component={RagisterForm}/>
                 </Scene>
-                <Scene key="main"  navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}} renderBackButton={() => (null)} renderLeftButton={()=>(null)}>
-                    <Scene key="listpage" component={ListsPage}/>
-                    <Scene key="listview" component={ListView}/>
-                    <Scene key="createlist" component={CreateList}/>
-                    <Scene key="editlist" component={EditList}/>
+                <Scene key="main" navigationBarStyle={{ backgroundColor: '#5aba1f', height: 0}} renderBackButton={() => (null)} renderLeftButton={()=>(null)}>
+                    <Scene key="listpage" duration={0} component={ListsPage}/>
+                    <Scene key="listview" duration={0} component={ListView}/>
+                    <Scene key="createlist" duration={0} component={CreateList}/>
+                    <Scene key="editlist" duration={0} component={EditList}/>
                 </Scene>
             </Scene>
         </Router>

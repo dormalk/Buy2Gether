@@ -1,7 +1,7 @@
 import React from 'react';
 import {View,Text,TouchableOpacity,ScrollView,KeyboardAvoidingView} from 'react-native';
 import {Card,CardSection,RegularButton,Input,Confirm} from './common';
-import { DARK_GREEN,DARK,WHITE } from './StyleConfig';
+import { DARK_GREEN,DARK,WHITE,DARK_GREY } from './StyleConfig';
 import ItemListRouting from './ItemListRouting';
 import {connect} from 'react-redux';
 import {createList,updateUlistUser} from '../actions';
@@ -10,10 +10,14 @@ import {Actions} from 'react-native-router-flux';
 
 class CreateList extends React.Component{
 
-    state = {
-        title: '',
-        items: [],
-        showModal: false
+    constructor(props){
+        super(props);
+        this.state = {
+            title: '',
+            items: [],
+            showModal: false
+        }
+        this.autoPlus = false;
     }
 
     renderList(){
@@ -23,6 +27,7 @@ class CreateList extends React.Component{
             <ItemListRouting 
                 {...item} 
                 key={val} 
+                isAutoPlus={this.autoPlus}
                 ukey={val++} 
                 onItemUpdate={this.onItemUpdate.bind(this)}
                 onPlusPressed={this.onPlusPressed.bind(this)}
@@ -39,7 +44,8 @@ class CreateList extends React.Component{
             var it = {...value, isOpen:false};
             return it;
         });
-        vitems = vitems.filter(value => value.title.length > 0 || value.isOpen == true);
+        vitems = vitems.filter(value => (value.title.length > 0));
+        if(vitems.length != this.state.items.length) this.autoPlus = false;
         const item = {
             title: '',
             quantity: 0,
@@ -63,10 +69,16 @@ class CreateList extends React.Component{
     }
 
     onItemDelete(index){
+        this.autoPlus = false;
         var items = this.state.items;
         var val = 0;
         items = items.filter(() => index!==val++);
         this.setState({items:[...items]}); 
+    }
+
+    onAutoPlusMode(){
+        this.autoPlus = true;
+        this.onPlusPressed()
     }
 
     onChangeShowModal(){
@@ -90,6 +102,12 @@ class CreateList extends React.Component{
         this.setState({showModal:!this.state.showModal});
         Actions.listpage()
     }
+
+    onAutoPlusMode(){
+        this.autoPlus = true;
+        this.onPlusPressed()
+    }
+
     render(){
         const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle,TitleTextInputStyle,TitleInputContainerStyle} = styles;
         return(
@@ -112,9 +130,9 @@ class CreateList extends React.Component{
                             </CardSection>
 
                             {this.renderList()}
-                            <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
+                            <TouchableOpacity onPress={this.onAutoPlusMode.bind(this)}>
                                 <CardSection style={plusSectionStyle}>
-                                        <Text style={plusStyle}>+</Text>
+                                        <Text style={plusStyle}>+ הוסף פריט</Text>
                                 </CardSection>
                             </TouchableOpacity>
 
@@ -152,9 +170,9 @@ class CreateList extends React.Component{
 const styles = {
     plusStyle: {
         alignSelf: 'center',
-        color: DARK_GREEN,
-        fontSize: 30,
-        fontWeight: '800',
+        color: DARK_GREY,
+        fontSize: 20,
+        fontWeight: '500',
         paddingTop: 5,
         paddingBottom: 5
     },

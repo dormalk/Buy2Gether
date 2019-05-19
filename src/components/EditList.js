@@ -1,7 +1,7 @@
 import React from 'react';
 import {View,Text,TouchableOpacity,ScrollView, KeyboardAvoidingView} from 'react-native';
 import {Card,CardSection,RegularButton,Input,Confirm} from './common';
-import { DARK_GREEN,DARK,WHITE } from './StyleConfig';
+import { DARK_GREEN,DARK,WHITE,DARK_GREY } from './StyleConfig';
 import ItemListRouting from './ItemListRouting';
 import {connect} from 'react-redux';
 import {updateList} from '../actions';
@@ -12,9 +12,13 @@ import {Actions} from 'react-native-router-flux';
 
 class EditList extends React.Component{
 
-    state = {
-        title: this.props.value.title || '',
-        items: this.props.value.items || []
+    constructor(props){
+        super(props);
+        this.state = {
+            title: this.props.value.title || '',
+            items: this.props.value.items || []
+        }
+        this.autoPlus = false;
     }
 
     renderList(){
@@ -23,12 +27,13 @@ class EditList extends React.Component{
         const itemsList =  items.map((item) => {
             return(           
                 <ItemListRouting 
-                {...item} 
-                key={val} 
-                ukey={val++} 
-                onItemUpdate={this.onItemUpdate.bind(this)}
-                onItemDelete={this.onItemDelete.bind(this)}
-                onPlusPressed={this.onPlusPressed.bind(this)}/>
+                    {...item} 
+                    isAutoPlus={this.autoPlus}
+                    key={val} 
+                    ukey={val++} 
+                    onItemUpdate={this.onItemUpdate.bind(this)}
+                    onItemDelete={this.onItemDelete.bind(this)}
+                    onPlusPressed={this.onPlusPressed.bind(this)}/>
                 );
         });
         return(
@@ -38,11 +43,12 @@ class EditList extends React.Component{
         )
     }
     onPlusPressed(){
-        var vitems = this.state.items.map((value) => {
-            var it = {...value, isOpen:false};
-            return it;
-        });
-        vitems = vitems.filter(value => value.title.length > 0 || value.isOpen == true);
+        // var vitems = this.state.items.map((value) => {
+        //     var it = {...value, isOpen:false};
+        //     return it;
+        // });
+        var vitems = this.state.items.filter(value => (value.title.length > 0));
+        if(vitems.length != this.state.items.length) this.autoPlus = false;
         const item = {
             title: '',
             quantity: 0,
@@ -52,6 +58,11 @@ class EditList extends React.Component{
         }
         
         this.setState({items: [...vitems,item]});
+    }
+
+    onAutoPlusMode(){
+        this.autoPlus = true;
+        this.onPlusPressed()
     }
 
     onListTitleChanged(title){
@@ -66,6 +77,7 @@ class EditList extends React.Component{
     }
 
     onItemDelete(index){
+        this.autoPlus = false;
         var items = this.state.items;
         var val = 0;
         items = items.filter(() => index !== val++);
@@ -84,9 +96,11 @@ class EditList extends React.Component{
         this.props.updateList({lid: this.props.value.key, update})
         Actions.listpage();
     }
+    
     onDropEdit(){
         Actions.listpage()
     }
+
     render(){
         const {plusStyle,titleStyle,cardSectionStyle,whiteButtonStyle,darkButtonStyle,plusSectionStyle,TitleTextInputStyle,TitleInputContainerStyle} = styles;
         return(
@@ -108,9 +122,9 @@ class EditList extends React.Component{
                                 />
                             </CardSection>
                                 {this.renderList()}
-                            <TouchableOpacity onPress={this.onPlusPressed.bind(this)}>
+                            <TouchableOpacity onPress={this.onAutoPlusMode.bind(this)}>
                                 <CardSection style={plusSectionStyle}>
-                                        <Text style={plusStyle}>+</Text>
+                                        <Text style={plusStyle}>+ הוסף פריט</Text>
                                 </CardSection>
                             </TouchableOpacity>
                             <CardSection style={{marginBottom:130}}>
@@ -140,9 +154,9 @@ class EditList extends React.Component{
 const styles = {
     plusStyle: {
         alignSelf: 'center',
-        color: DARK_GREEN,
-        fontSize: 30,
-        fontWeight: '800',
+        color: DARK_GREY,
+        fontSize: 20,
+        fontWeight: '500',
         paddingTop: 5,
         paddingBottom: 5
     },
