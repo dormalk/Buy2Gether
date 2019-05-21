@@ -10,18 +10,10 @@ class ItemList extends React.Component{
 
     state = {
         showModal: false,
-        showModal2: false
+        showModal2: false,
+        url: ''
     }
 
-    componentDidMount(){
-        Linking.addEventListener('url',() => {
-            const initialUrl = Linking.getInitialURL();
-            console.warn(initialUrl);
-            let { path, queryParams } = Expo.Linking.parse(initialUrl);
-            if(queryParams.listId)
-                this.props.agreeShereList(queryParams.listId);
-        })
-    }
     onRemoveRequest(key) {
         if(!this.props.shered){
             this.props.removeList({lid:key})
@@ -36,6 +28,17 @@ class ItemList extends React.Component{
         }
     }
 
+    componentDidMount() {
+        Linking.getInitialURL().then((url) => {
+          if (url) {
+            url = url.split('?')[0];
+            if(!url.startsWith('exp://'))
+                url = "https://murmuring-garden-12011.herokuapp.com/"
+            this.setState({url});
+          }
+        }).catch(err => console.error('An error occurred', err));
+    }
+
     onChangeShowModal(){
         const showModal = !this.state.showModal;
         this.setState({showModal});
@@ -47,11 +50,11 @@ class ItemList extends React.Component{
         Actions.editlist({value:this.props.value});
     }
 
-    onShereRquest(){
+    async onShereRquest(){
         //this.setState({showModal2:true});
-        Share.share({
-            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + Expo.Linking.makeUrl('',{listId:this.props.value.key}),
-            url: Expo.Linking.makeUrl('',{listId:this.props.value.key}),
+        await Share.share({
+            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + this.state.url+'?'+this.props.value.key,
+            url: this.state.url+'?'+this.props.value.key,
             title: 'קונים ביחד - אפליקציית קניות חברתית',
           })
           .then((result) =>{

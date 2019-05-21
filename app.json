@@ -4,6 +4,7 @@
     "slug": "Buy2Gether",
     "privacy": "public",
     "sdkVersion": "32.0.0",
+    "scheme":"buy2gether",
     "platforms": [
       "ios",
       "android"
@@ -26,7 +27,8 @@
     },
     "android": {
       "package": "com.dormalka.buy2gether",
-      "permissions": []
+      "permissions": [],
+      "versionCode": 10
     }
   }
 }

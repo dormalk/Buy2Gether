@@ -1,7 +1,7 @@
 import React from 'react';
 import {View,Text,TouchableOpacity,ScrollView,KeyboardAvoidingView} from 'react-native';
 import {Card,CardSection,RegularButton,Input,Confirm} from './common';
-import { DARK_GREEN,DARK,WHITE,DARK_GREY } from './StyleConfig';
+import { DARK_GREEN,DARK,WHITE,DARK_GREY, OCEAN_BLUE } from './StyleConfig';
 import ItemListRouting from './ItemListRouting';
 import {connect} from 'react-redux';
 import {createList,updateUlistUser} from '../actions';
@@ -170,7 +170,7 @@ class CreateList extends React.Component{
 const styles = {
     plusStyle: {
         alignSelf: 'center',
-        color: DARK_GREY,
+        color: OCEAN_BLUE,
         fontSize: 20,
         fontWeight: '500',
         paddingTop: 5,

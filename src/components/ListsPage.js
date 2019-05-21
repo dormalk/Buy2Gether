@@ -12,28 +12,54 @@ class ListsPage extends React.Component{
     loading = true;
     loading2 = true;
 
-    
-    state = {
-        userlist:[],
-        sheredlist:[],
-        isLoading: this.props.isLoading || false 
-    }
-
     constructor(props){
         super(props);
+        this.state = {
+            userlist:[],
+            sheredlist:[],
+            isLoading: this.props.isLoading || false,
+        }
+        this.handelGetUrl = this.handelGetUrl.bind(this);
         props.resetLists();
     }
 
     componentDidMount(){
-        Linking.getInitialURL().then((url) => {
-            if (url) {
-                let { queryParams } = Expo.Linking.parse(url);
-                if(queryParams.listId)
-                    this.props.agreeShereList(queryParams.listId);
-            }
-        }).catch(err => console.error('An error occurred', err));
+        Linking.addEventListener('url', this.handelGetUrl);
+        Linking.getInitialURL().then(url => {
+            if (event.url) {
+                var listId = event.url.split('?')[1];
+                console.warn(listId);
+                if(listId) {
+                    agreeShereList(listId);
+                    var sheredlist = this.state.sheredlist;
+                    if(!sheredlist.includes(listId)) sheredlist.push(listId);
+                    this.setState({sheredlist});
+                }
+            }    
+        });
     }
 
+    componentWillUnmount(){
+        Linking.removeEventListener('url', this.handelGetUrl);
+    }
+
+    handelGetUrl(event){
+        if (event.url) {
+            var listId = event.url.split('?')[1];
+            console.warn(listId);
+            if(listId) {
+                agreeShereList(listId);
+                var sheredlist = this.state.sheredlist;
+                if(!sheredlist.includes(listId)) sheredlist.push(listId);
+                this.setState({sheredlist});
+            }
+        }
+    }
+
+    handleDeepLink = (url) => {
+
+  
+    };
     componentWillUpdate(nextProps,nextState){
 
         if(nextProps.ulist.length != nextState.userlist.length){

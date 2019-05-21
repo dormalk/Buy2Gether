@@ -23,7 +23,7 @@ export const UPDATE_SLIST_USER = 'update_slist_user';
 export const REMOVE_USER = 'remove_user';
 export const ADD_NEW_LIST = 'add_new_list';
 export const REMOVE_LIST = 'remove_list';
-
+export const ADD_NEW_SLIST = 'add_new_slist';
 
 /*List*/
 export const FATCH_ULIST = 'fatch_ulist';

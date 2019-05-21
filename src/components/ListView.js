@@ -1,5 +1,5 @@
 import React from 'react'
-import {View,Text,ScrollView} from 'react-native'
+import {View,Text,ScrollView,Share, Linking} from 'react-native'
 import {Card,CardSection,ImageButton,Confirm} from './common';
 import NevMenu from './NevMenu';
 import {removeList,updateItemAtList} from '../actions';
@@ -12,13 +12,25 @@ class ListView extends React.Component{
 
     state = {
         showModal: false,
-        showModal2: false
+        showModal2: false,
+        url: ''
     }
 
     onRemoveRequest(key) {
         this.props.onRemoveRequest(key);
         this.onChangeShowModal();
         Actions.listpage();
+    }
+
+    componentDidMount() {
+        Linking.getInitialURL().then((url) => {
+            if (url) {
+              url = url.split('?')[0];
+              if(!url.startsWith('exp://'))
+                  url = "https://murmuring-garden-12011.herokuapp.com/"
+              this.setState({url});
+            }
+          }).catch(err => console.error('An error occurred', err));
     }
 
     itemChanged(update,index){
@@ -45,8 +57,20 @@ class ListView extends React.Component{
         this.setState({showModal});
     }
 
-    onShereRquest(){
-        this.setState({showModal2:true});
+    async onShereRquest(){
+        //this.setState({showModal2:true});
+        await Share.share({
+            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + this.state.url+'?'+this.props.value.key,
+            url: this.state.url+'?'+this.props.value.key,
+            title: 'קונים ביחד - אפליקציית קניות חברתית',
+          })
+          .then((result) =>{
+            console.log(result)
+              if(result === 'dismissedAction'){
+                return
+              }
+          })
+          .catch((error) => console.log(error));
     }
 
     onRenderButtons(){
