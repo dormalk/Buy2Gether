@@ -27,7 +27,7 @@ class ListView extends React.Component{
             if (url) {
               url = url.split('?')[0];
               if(!url.startsWith('exp://'))
-                  url = "https://murmuring-garden-12011.herokuapp.com/"
+                  url = "https://tinyurl.com/y392wvsw"
               this.setState({url});
             }
           }).catch(err => console.error('An error occurred', err));
@@ -38,7 +38,7 @@ class ListView extends React.Component{
     }   
 
     onEditRequet(){
-        Actions.editlist({value:this.props.value});
+        Actions.editlist({value:this.props.value,src:'view',onRemoveRequest:this.props.onRemoveRequest.bind(this)});
     }
 
     renderList(){

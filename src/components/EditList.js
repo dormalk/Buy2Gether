@@ -94,7 +94,10 @@ class EditList extends React.Component{
             items: this.state.items
         }
         this.props.updateList({lid: this.props.value.key, update})
-        Actions.listpage();
+        if(this.props.src!=undefined)
+            Actions.listview({value:this.props.value,onRemoveRequest:this.props.onRemoveRequest.bind(this),shered:false});
+        else 
+            Actions.listpage();
     }
     
     onDropEdit(){

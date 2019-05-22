@@ -1,12 +1,11 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {Card,CardSection,Input,RegularButton,Spinner,Link, Welcoming} from './common';
-import { emailChanged,passwordChanged,loginUser,isLogin,agreeShereList } from '../actions';
+import {Text,TouchableOpacity,View} from 'react-native';
+import {Card,CardSection,Input,RegularButton,Spinner,Link, Welcoming,BottonWithIcon} from './common';
+import { emailChanged,passwordChanged,loginUser,isLogin,agreeShereList,loginWithGoogle } from '../actions';
 import { connect } from 'react-redux';
-import {DARK_GREEN,WHITE} from './StyleConfig';
+import {DARK_GREEN,WHITE,OCEAN_BLUE} from './StyleConfig';
 import {Actions} from 'react-native-router-flux';
 import RecoveryPasswordModal from './RecoveryPasswordModal';
-
 
 class LoginForm extends React.Component{
     state = {
@@ -14,6 +13,8 @@ class LoginForm extends React.Component{
         welcome: this.props.welcome || true
     }    
 
+
+    
     checkLogin = setInterval(() => this.props.isLogin(),1000);
     
     onEmailChange(email){
@@ -65,9 +66,22 @@ class LoginForm extends React.Component{
             <Welcoming/>
         );
     }
+
+    onGooleLogin(){
+        this.props.loginWithGoogle();
+    }
+
     renderForm(){
         return(
             <Card>
+                <CardSection>
+                    <BottonWithIcon onPress={this.onGooleLogin.bind(this)}
+                                    externButtonStyle={styles.googleLoginButtonStyle}
+                                    externTextStyle={{color:OCEAN_BLUE}}
+                                    source={require('../images/google.png')}>
+                            התחבר עם גוגל
+                    </BottonWithIcon>
+                </CardSection>
                 <CardSection>
                 <Input
                     label="אימייל"
@@ -141,14 +155,19 @@ const styles = {
         backgroundColor:WHITE,
         borderColor:DARK_GREEN
     },
+    googleLoginButtonStyle:{
+        backgroundColor:WHITE,
+        borderColor:OCEAN_BLUE
+    },
     darkButtonStyle:{
         backgroundColor:DARK_GREEN,
         borderColor:DARK_GREEN
     }
 }
 
+
 const mapStateToProps = ({auth}) =>{
     const {email,password,error,loading,confirm} = auth;
     return {email,password,error,loading,confirm};
 }
-export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser,isLogin,agreeShereList})(LoginForm);
+export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser,isLogin,agreeShereList,loginWithGoogle})(LoginForm);

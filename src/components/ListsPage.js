@@ -26,8 +26,8 @@ class ListsPage extends React.Component{
     componentDidMount(){
         Linking.addEventListener('url', this.handelGetUrl);
         Linking.getInitialURL().then(url => {
-            if (event.url) {
-                var listId = event.url.split('?')[1];
+            if (url) {
+                var listId = url.split('?')[1];
                 console.warn(listId);
                 if(listId) {
                     agreeShereList(listId);

@@ -1,6 +1,7 @@
 export * from './Buttons/RegularBotton';
 export * from './Buttons/ImageButton';
 export * from './Buttons/ImageBottonNoFeedback';
+export * from './Buttons/ButtonWithIcon';
 export * from './Card';
 export * from './CardSection';
 export * from './Header';
