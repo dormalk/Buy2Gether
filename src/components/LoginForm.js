@@ -6,11 +6,13 @@ import { connect } from 'react-redux';
 import {DARK_GREEN,WHITE,OCEAN_BLUE} from './StyleConfig';
 import {Actions} from 'react-native-router-flux';
 import RecoveryPasswordModal from './RecoveryPasswordModal';
+import firebase from '@firebase/app';
 
 class LoginForm extends React.Component{
     state = {
         showModal: false,
-        welcome: this.props.welcome || true
+        welcome: this.props.welcome || true,
+        googleLogin: false, 
     }    
 
 
@@ -71,16 +73,25 @@ class LoginForm extends React.Component{
         this.props.loginWithGoogle();
     }
 
+    renderLoginGoogleButton(){
+        if(this.props.loading)
+            return( <Spinner size="large"/>);
+        else{
+            return(
+                <BottonWithIcon onPress={this.onGooleLogin.bind(this)}
+                    externButtonStyle={styles.googleLoginButtonStyle}
+                    externTextStyle={{color:OCEAN_BLUE}}
+                    source={require('../images/google.png')}>
+                        התחבר עם גוגל
+                </BottonWithIcon>
+            )
+        }
+    }
     renderForm(){
         return(
             <Card>
                 <CardSection>
-                    <BottonWithIcon onPress={this.onGooleLogin.bind(this)}
-                                    externButtonStyle={styles.googleLoginButtonStyle}
-                                    externTextStyle={{color:OCEAN_BLUE}}
-                                    source={require('../images/google.png')}>
-                            התחבר עם גוגל
-                    </BottonWithIcon>
+                    {this.renderLoginGoogleButton()}
                 </CardSection>
                 <CardSection>
                 <Input

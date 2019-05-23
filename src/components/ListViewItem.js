@@ -8,8 +8,15 @@ class ListViewItem extends React.Component{
         index: this.props.position,
         isOpen: false
     }
+    componentDidUpdate(prevProps, prevState) {
+        // only update chart if the data has changed
+        if (prevProps.checked != this.state.checked) {
+            console.warn('update');
+            this.setState({checked: prevProps.checked})
+        }
+        console.warn(prevProps.checked);
+      }
     renderOpenItem(){
-
         if(this.state.isOpen){
             return(
                 <View style={{flexDirection: 'column',paddingTop: 5, paddingBottom: 5,marginRight: 20}}>

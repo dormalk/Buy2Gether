@@ -161,31 +161,74 @@ export const recoverySuccess = (dispatch) => {
 
 
 
+// export const loginWithGoogle = () => {
+//     return(dispatch) => {
+//         dispatch({type:LOGIN_USER})
+//         firebase.auth().onAuthStateChanged((user) => {
+//             if(user){
+//                 dispatch(fatchUser());
+//                 loginSuccess(dispatch,user);
+//             }
+//             else{
+//                 googleLogin(dispatch) 
+//             }
+//         })
+//     }
+// }
+
 export const loginWithGoogle = () => {
-    return(dispatch) => {
-        dispatch({type:LOGIN_USER})
-        firebase.auth().onAuthStateChanged((user) => {
-            if(user){
+    return async (dispatch) => {
+        dispatch({type:LOGIN_USER});
+        const googleUser = await Google.logInAsync({
+            behavior: 'web',
+            androidClientId:'307713454797-88id6bfq67dptl9qaqfaj8593vugutr1.apps.googleusercontent.com',
+            scopes:['profile','email']
+        })
+        if(googleUser.type === 'success'){
+            var credential = firebase.auth.GoogleAuthProvider.credential(
+                googleUser.idToken,
+                googleUser.accessToken
+            );
+
+            firebase.auth().signInWithCredential(credential)
+            .then((user) => {
                 dispatch(fatchUser());
                 loginSuccess(dispatch,user);
-            }
-            else{
-                googleLogin(dispatch) 
-            }
-        })
+            })
+            .catch(() => loginFail(dispatch));
+        }
+        else{
+            loginFail(dispatch);
+        }
     }
 }
+
+// export const loginWithGoogle = () => {
+//     return(dispatch) => {
+//         dispatch({type:LOGIN_USER})
+//         firebase.auth().onAuthStateChanged((user) => {
+//             if(user){
+//                 dispatch(fatchUser());
+//                 loginSuccess(dispatch,user);
+//             }
+//             else{                
+//                 googleLogin(dispatch) 
+//             }
+//         })
+//     }
+// }
+
 
 
 googleLogin = async (dispatch) => {
   try{
     const result = await Google.logInAsync({
         behavior: 'web',
-        androidClientId:'307713454797-7hmjslv82421p5trcqi2i2e279becssn.apps.googleusercontent.com',
+        androidClientId:'307713454797-88id6bfq67dptl9qaqfaj8593vugutr1.apps.googleusercontent.com',
         scopes:['profile','email']
     })
     if(result.type === 'success'){
-        onSignIn(result)
+        onSignIn(result,dispatch)
     }
   }
   catch(e){
@@ -194,7 +237,7 @@ googleLogin = async (dispatch) => {
 }
 
 
-onSignIn = (googleUser) => {
+onSignIn = (googleUser,dispatch) => {
     console.log('Google Auth Response', googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     var unsubscribe = firebase
@@ -209,7 +252,8 @@ onSignIn = (googleUser) => {
             googleUser.accessToken);
         // Sign in with credential from the Google user.
         firebase.auth().signInWithCredential(credential).than(()=>{
-            console.log('user signed in');
+            dispatch(fatchUser());
+            loginSuccess(dispatch,user);
         }).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;

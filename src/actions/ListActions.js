@@ -12,7 +12,7 @@ import '@firebase/storage';
 
 export const createList = (newList) => {
     console.log(newList);
-    return() => {
+    return () => {
         return firebase.database().ref(`lists`)
         .push(newList);
     }

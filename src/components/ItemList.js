@@ -33,7 +33,7 @@ class ItemList extends React.Component{
           if (url) {
             url = url.split('?')[0];
             if(!url.startsWith('exp://'))
-                url = "https://murmuring-garden-12011.herokuapp.com/"
+                url = "https://tinyurl.com/y392wvsw"
             this.setState({url});
           }
         }).catch(err => console.error('An error occurred', err));

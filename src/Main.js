@@ -20,8 +20,11 @@ class Main extends React.Component{
             databaseURL: "https://shoppi-96a49.firebaseio.com",
             projectId: "shoppi-96a49",
             storageBucket: "shoppi-96a49.appspot.com",
-            messagingSenderId: "307713454797"
+            messagingSenderId: "307713454797",
+            appId: "1:307713454797:web:6322b677c1ff402f"
+
           };
+          // Initialize Firebase
           firebase.initializeApp(config);
     }
     render(){

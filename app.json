@@ -28,7 +28,7 @@
     "android": {
       "package": "com.dormalka.buy2gether",
       "permissions": [],
-      "versionCode": 10
+      "versionCode": 11
     }
   }
 }

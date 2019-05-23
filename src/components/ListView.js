@@ -2,19 +2,33 @@ import React from 'react'
 import {View,Text,ScrollView,Share, Linking} from 'react-native'
 import {Card,CardSection,ImageButton,Confirm} from './common';
 import NevMenu from './NevMenu';
-import {removeList,updateItemAtList} from '../actions';
+import {removeList,updateItemAtList,fetchListInterval} from '../actions';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 import ListViewItem from './ListViewItem';
 import ShereListModal from './ShereListModal';
+import firebase from '@firebase/app';
 
 class ListView extends React.Component{
 
     state = {
         showModal: false,
         showModal2: false,
-        url: ''
+        url: '',
+        value: this.props.value || []
     }
+
+    checkLogin = setInterval(function(){
+        var lid = this.state.value.key;
+        firebase.database().ref(`lists/${lid}/items`)
+        .once('value')
+        .then((snapshot) => {
+            var value = this.state.value;
+            value.items = [...snapshot.val()];
+            this.setState({ state: this.state });
+        })
+        .catch(() => { return Promise.reject(); }); 
+    }.bind(this),1000);
 
     onRemoveRequest(key) {
         this.props.onRemoveRequest(key);
@@ -34,19 +48,20 @@ class ListView extends React.Component{
     }
 
     itemChanged(update,index){
-        this.props.updateItemAtList({lid:this.props.value.key,update,index});
+        this.props.updateItemAtList({lid:this.state.value.key,update,index});
     }   
 
     onEditRequet(){
-        Actions.editlist({value:this.props.value,src:'view',onRemoveRequest:this.props.onRemoveRequest.bind(this)});
+        Actions.editlist({value:this.state.value,src:'view',onRemoveRequest:this.props.onRemoveRequest.bind(this)});
     }
 
     renderList(){
-        if(!this.props.value.items)
+
+        if(!this.state.value.items)
             return <CardSection><Text>אין פריטים ברשימה זו</Text></CardSection>
         var i = 0;
-        var listJSX = this.props.value.items.map(item => 
-            {
+        var listJSX = this.state.value.items.map(item => 
+            {  
                 return <ListViewItem key={i} {...item} position={i++} itemChanged={this.itemChanged.bind(this)}/>
             });
         return listJSX;
@@ -60,8 +75,8 @@ class ListView extends React.Component{
     async onShereRquest(){
         //this.setState({showModal2:true});
         await Share.share({
-            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + this.state.url+'?'+this.props.value.key,
-            url: this.state.url+'?'+this.props.value.key,
+            message: "שיתפו איתך רשימת קניות חדשה - כנס ללינק על מנת לאשר את השיתוף " + this.state.url+'?'+this.state.value.key,
+            url: this.state.url+'?'+this.state.value.key,
             title: 'קונים ביחד - אפליקציית קניות חברתית',
           })
           .then((result) =>{
@@ -109,7 +124,7 @@ class ListView extends React.Component{
     }
 
     render(){
-        const {title,items,key} = this.props.value;
+        const {title,items,key} = this.state.value;
         const {imageStyle,cardSectionStyle,titleTouchableStyle,imageContainerStyle} = styles;
         return(
             <View>
@@ -133,7 +148,7 @@ class ListView extends React.Component{
                 <ShereListModal
                     visible={this.state.showModal2}
                     onChangeModal={() => this.setState({showModal2:!this.state.showModal2})}
-                    value={this.props.value}
+                    value={this.state.value}
                 />  
             </View>
         )
