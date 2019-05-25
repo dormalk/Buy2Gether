@@ -17,19 +17,31 @@ class ListView extends React.Component{
         url: '',
         value: this.props.value || []
     }
+    checkLogin = 0;
 
-    checkLogin = setInterval(function(){
-        var lid = this.state.value.key;
-        firebase.database().ref(`lists/${lid}/items`)
-        .once('value')
-        .then((snapshot) => {
-            var value = this.state.value;
-            value.items = [...snapshot.val()];
-            this.setState({ state: this.state });
-        })
-        .catch(() => { return Promise.reject(); }); 
-    }.bind(this),1000);
-
+    componentWillMount(){
+        this.checkLogin = setInterval(function(){
+            if(Actions.currentScene != 'listview') clearInterval(this.checkLogin);
+            var lid = this.state.value.key;
+            firebase.database().ref(`lists/${lid}/items`)
+            .once('value')
+            .then((snapshot) => {
+                var value = this.state.value;
+                value.items = [...snapshot.val()];
+                this.setState({value, state: this.state });
+            })
+            .catch(() => { 
+                var value = this.state.value;
+                value.items = [];
+                this.setState({value, state: this.state });
+                return Promise.reject(); 
+            }); 
+        }.bind(this),500);  
+    }
+    
+    componentWillUnmount(){
+        clearInterval(this.checkLogin);
+    }
     onRemoveRequest(key) {
         this.props.onRemoveRequest(key);
         this.onChangeShowModal();
@@ -57,7 +69,7 @@ class ListView extends React.Component{
 
     renderList(){
 
-        if(!this.state.value.items)
+        if(!this.state.value.items || this.state.value.items.length == 0)
             return <CardSection><Text>אין פריטים ברשימה זו</Text></CardSection>
         var i = 0;
         var listJSX = this.state.value.items.map(item => 

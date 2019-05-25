@@ -5,7 +5,8 @@ import {Card,CardSection,Spinner} from './common';
 import NevMenu from './NevMenu';
 import {fatchList,resetLists,fatchSheredList,agreeShereList} from '../actions';
 import ItemList from './ItemList';
-
+import NewbiGuider from './NewbiGuider';
+import firebase from '@firebase/app';
 
 class ListsPage extends React.Component{
     
@@ -18,6 +19,7 @@ class ListsPage extends React.Component{
             userlist:[],
             sheredlist:[],
             isLoading: this.props.isLoading || false,
+            isFirst: false
         }
         this.handelGetUrl = this.handelGetUrl.bind(this);
         props.resetLists();
@@ -25,10 +27,10 @@ class ListsPage extends React.Component{
 
     componentDidMount(){
         Linking.addEventListener('url', this.handelGetUrl);
+
         Linking.getInitialURL().then(url => {
             if (url) {
                 var listId = url.split('?')[1];
-                console.warn(listId);
                 if(listId) {
                     agreeShereList(listId);
                     var sheredlist = this.state.sheredlist;
@@ -39,6 +41,15 @@ class ListsPage extends React.Component{
         });
     }
 
+    componentWillMount(){
+        const {currentUser} = firebase.auth();
+        firebase.database().ref(`users/${currentUser.uid}/isFirst`)
+        .on('value', (snapshot) =>{
+            var isFirst = snapshot.val();
+            if(isFirst == undefined) isFirst = true;            
+            this.setState({isFirst});
+        });
+    }
     componentWillUnmount(){
         Linking.removeEventListener('url', this.handelGetUrl);
     }
@@ -46,7 +57,6 @@ class ListsPage extends React.Component{
     handelGetUrl(event){
         if (event.url) {
             var listId = event.url.split('?')[1];
-            console.warn(listId);
             if(listId) {
                 agreeShereList(listId);
                 var sheredlist = this.state.sheredlist;
@@ -148,16 +158,33 @@ class ListsPage extends React.Component{
             </View>
         )
     }
+
+    renderPageRouter(){
+        if(!this.state.isFirst){
+            if(this.state.isLoading){
+                return this.renderloaidng();
+            }
+            else{
+                return this.renderPage();
+            }
+        }
+        if(this.state.isFirst){
+            return <NewbiGuider
+                        onFinish={() => this.setState({isFirst: false})}
+                    />
+        }
+
+    }
     render(){
         setTimeout(() => this.setState({isLoading: false}),1200);
-        return this.state.isLoading?this.renderloaidng():this.renderPage();
+        return this.renderPageRouter()
     }
 }
 
 const mapStateToProps = ({user,lists}) => {
-    const {email,ulist,slist} = user;
+    const {email,ulist,slist,isFirst} = user;
     const {userlist,sheredlist} = lists;
-    return {email,ulist,slist,userlist,sheredlist};
+    return {email,ulist,slist,userlist,sheredlist,isFirst};
 }
 
 

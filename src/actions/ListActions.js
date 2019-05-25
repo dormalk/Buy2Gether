@@ -28,7 +28,7 @@ export const removeList = ({lid}) => {
 export const addListToUser = ({lid}) => {
     const {currentUser} = firebase.auth();
     return(dispatch) => {
-        firebase.database().ref(`users/${currentUser}/ulist`)
+        firebase.database().ref(`users/${currentUser.uid}/ulist`)
         .set(lid)
         .then(() => dispatch({type: ADD_NEW_LIST, payload: uid}))
     }

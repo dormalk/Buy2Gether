@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 9468,
-  "expoServerNgrokUrl": "https://ij-gdy.dormalk.buy2gether.exp.direct",
-  "packagerNgrokUrl": "https://packager.ij-gdy.dormalk.buy2gether.exp.direct",
-  "ngrokPid": 15864,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

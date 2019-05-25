@@ -4,6 +4,7 @@ import{
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGIN_USER,
+    LOGIN_USER_WITH_GOOGLE,
     RAGISTER_SUCCESS,
     RAGISTER_FAIL,
     RAGISTER_USER,
@@ -54,19 +55,26 @@ export default (state = INITIAL_STATE,action) => {
                 confirm: '',
                 error: 'אימות נכשל',
                 password: '',
-                loading: false
+                loading: false,
+                googleloading: false
             }
         case LOGIN_SUCCESS:
             return{
                 ...state,
                 ...INITIAL_STATE,
                 user: action.payload,
-                loading: false
+                loading: false,
+                googleloading: false
             }
         case LOGIN_USER:
             return{
                 ...state,
                 loading: true
+            }
+        case LOGIN_USER_WITH_GOOGLE:
+            return{
+                ...state,
+                googleloading: true
             }
         case RAGISTER_SUCCESS:
             return{

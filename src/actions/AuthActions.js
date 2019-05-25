@@ -13,10 +13,13 @@ import{
     RECOVERY_FAIL,
     RECOVERY_SUCCESS,
     RECOVERY_PASSWORD,
-    LOGOUT_USER
+    LOGOUT_USER,
+    LOGIN_USER_WITH_GOOGLE,
+    RESET_LISTS,
+    REMOVE_USER
 } from './types';
 import firebase from '@firebase/app';
-import {fatchUser} from './UserActions';
+import {fatchUser,createUser} from './UserActions';
 import '@firebase/auth';
 import {Actions} from 'react-native-router-flux';
 import { reject } from 'rsvp';
@@ -85,7 +88,9 @@ export const isLogin = () => {
 
 export const logoutUser = () => {
     return(dispatch) => {
-        dispatch({type:LOGOUT_USER})
+        dispatch({type:LOGOUT_USER});
+        dispatch({type: RESET_LISTS});
+        dispatch({type: REMOVE_USER})
         firebase.auth().signOut()
         .then(() => {
             Actions.auth();
@@ -104,6 +109,7 @@ export const loginSuccess = (dispatch,user) => {
         payload: user
     });
 }
+
 
 export const ragisterUser = ({email,password,authPassword}) => {
     return(dispatch) => {
@@ -178,7 +184,7 @@ export const recoverySuccess = (dispatch) => {
 
 export const loginWithGoogle = () => {
     return async (dispatch) => {
-        dispatch({type:LOGIN_USER});
+        dispatch({type:LOGIN_USER_WITH_GOOGLE});
         const googleUser = await Google.logInAsync({
             behavior: 'web',
             androidClientId:'307713454797-88id6bfq67dptl9qaqfaj8593vugutr1.apps.googleusercontent.com',
@@ -194,11 +200,11 @@ export const loginWithGoogle = () => {
             .then((user) => {
                 dispatch(fatchUser());
                 loginSuccess(dispatch,user);
+                dispatch(createUser());
             })
-            .catch(() => loginFail(dispatch));
+            .catch(() => {});
         }
         else{
-            loginFail(dispatch);
         }
     }
 }

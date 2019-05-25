@@ -3,7 +3,8 @@ import{
     UPDATE_ULIST_USER,
     REMOVE_USER,
     CREATE_USER,
-    UPDATE_SLIST_USER
+    UPDATE_SLIST_USER,
+    RAGISTER_FAIL
 } from './types';
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -12,12 +13,17 @@ import {Actions} from 'react-native-router-flux';
 import {isLogin} from './AuthActions';
 
 
-export const createUser = ({email}) => {
+export const createUser = ({email=''}) => {
     const {currentUser} = firebase.auth();
     return(dispatch) => {
-        firebase.database().ref(`users/${currentUser.uid}/email`)
-        .set(email)
-        .then(() => dispatch({type:CREATE_USER, payload:email}));
+        if(currentUser){
+            firebase.database().ref(`users/${currentUser.uid}/`)
+            .set({email:email,isFirst:true})
+            .then(() => dispatch({type:CREATE_USER, payload:email}));    
+        }
+        else{
+            dispatch({type: RAGISTER_FAIL})
+        }
     }
 }
 

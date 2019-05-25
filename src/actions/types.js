@@ -4,6 +4,7 @@ export const PASSWORD_CHANGED = 'password_changed';
 export const AUTH_PASSWORD_CHANGED = 'auth_password_changed';
 export const LOGIN_FAIL = 'login_fail';
 export const LOGIN_USER = 'login_user';
+export const LOGIN_USER_WITH_GOOGLE = 'login_user_with_google'
 export const LOGOUT_USER = 'logout_user';
 export const LOGIN_SUCCESS = 'login_success';
 export const RAGISTER_FAIL = 'ragister_fail';

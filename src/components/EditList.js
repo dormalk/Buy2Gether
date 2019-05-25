@@ -89,9 +89,10 @@ class EditList extends React.Component{
     }
 
     onSaveList(){
+        var itemList = this.state.items.filter((item) => item.title != '');
         const update = {
             title: this.state.title,
-            items: this.state.items
+            items: itemList
         }
         this.props.updateList({lid: this.props.value.key, update})
         if(this.props.src!=undefined)

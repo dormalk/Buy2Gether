@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {DARK_GREEN,WHITE,OCEAN_BLUE} from './StyleConfig';
 import {Actions} from 'react-native-router-flux';
 import RecoveryPasswordModal from './RecoveryPasswordModal';
+import NewbiGuider from './NewbiGuider';
 import firebase from '@firebase/app';
 
 class LoginForm extends React.Component{
@@ -15,9 +16,7 @@ class LoginForm extends React.Component{
         googleLogin: false, 
     }    
 
-
-    
-    checkLogin = setInterval(() => this.props.isLogin(),1000);
+    checkLogin = setInterval(() => this.props.isLogin(),500);
     
     onEmailChange(email){
         this.props.emailChanged(email);
@@ -31,14 +30,17 @@ class LoginForm extends React.Component{
         const {email,password} = this.props;
         this.props.loginUser({email,password});
     }
+
     renderError(){
         if(this.props.error)
             return(<Text style={styles.errorTextStyle}>{this.props.error}</Text>);
     }
+
     renderConfirm(){
         if(this.props.confirm)
             return(<Text style={styles.confirmTextStyle}>{this.props.confirm}</Text>);
     }
+
     renderButton(){
         if(this.props.loading)
             return( <Spinner size="large"/>);
@@ -59,6 +61,7 @@ class LoginForm extends React.Component{
         this.props.passwordChanged('');
         Actions.ragister();
     }
+
     onRecovertRquest(){
         this.setState({showModal:true});
     }
@@ -74,7 +77,7 @@ class LoginForm extends React.Component{
     }
 
     renderLoginGoogleButton(){
-        if(this.props.loading)
+        if(this.props.googleloading)
             return( <Spinner size="large"/>);
         else{
             return(
@@ -87,6 +90,7 @@ class LoginForm extends React.Component{
             )
         }
     }
+
     renderForm(){
         return(
             <Card>
@@ -120,13 +124,13 @@ class LoginForm extends React.Component{
                     {this.renderButton()}
                 </CardSection>
                 <CardSection>
-                <RegularButton 
-                    onPress={this.onRagister.bind(this)}
-                    externButtonStyle={styles.whiteButtonStyle}
-                    externTextStyle={{color:DARK_GREEN}}
-                >   
-                    הרשם
-                </RegularButton>   
+                    <RegularButton 
+                        onPress={this.onRagister.bind(this)}
+                        externButtonStyle={styles.whiteButtonStyle}
+                        externTextStyle={{color:DARK_GREEN}}
+                    >   
+                        הרשם
+                    </RegularButton>   
                 </CardSection>
 
                 <RecoveryPasswordModal
@@ -136,6 +140,7 @@ class LoginForm extends React.Component{
             </Card>                
         );
     }
+
     render(){
         {setTimeout(() => {
             clearInterval(this.checkLogin);
@@ -145,7 +150,6 @@ class LoginForm extends React.Component{
         return this.state.welcome?this.renderWelcome():this.renderForm();
     }
 }
-
 
 const styles = {
     errorTextStyle: {
@@ -178,7 +182,8 @@ const styles = {
 
 
 const mapStateToProps = ({auth}) =>{
-    const {email,password,error,loading,confirm} = auth;
-    return {email,password,error,loading,confirm};
+    const {email,password,error,loading,confirm,googleloading} = auth;
+    return {email,password,error,loading,confirm,googleloading};
 }
+
 export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser,isLogin,agreeShereList,loginWithGoogle})(LoginForm);

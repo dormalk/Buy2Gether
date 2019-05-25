@@ -57,6 +57,7 @@ class ListItemEditable extends React.Component{
                         onChangeText = {this.onTitleChange.bind(this)}
                         value={title}
                         style={inputStyle}
+                        autoFocus={true}
                     />
                 </CardSection>
                 
