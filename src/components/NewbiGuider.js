@@ -14,17 +14,45 @@ class NewbiGuider extends React.Component{
 
     row=[
         {
-            title: 'צעד מספר 1',
-            sorce: require('../images/add.png')
+            title: 'תפריט ניווט ראשי הכולל שני עמודים - תצוגה והוספה, הכפתור הימני ביותר הינו כפתור ניתוק',
+            sorce: require('../images/NewbiGuider/phase1.png')
         },
         {
-            title: 'צעד מספר 2',
-            sorce: require('../images/arrow2.png')
+            title: 'עמוד התצוגה מכיל שני רשימות - הראשונה: רשימות שיצרתם',
+            sorce: require('../images/NewbiGuider/phase2.png')
         },
         {
-            title: 'צעד מספר 2',
-            sorce: require('../images/arrow2.png')
+            title: 'הרשימה השניה תכיל רשימות שהוספת באמצעות קישור שיתוף',
+            sorce: require('../images/NewbiGuider/phase3.png')
         },
+        {
+            title: 'לצד כל פריט ברשימה ישנו תפריט אפשרויות המכיל את האפשרויות: שיתוף, עריכה ומחיקה',
+            sorce: require('../images/NewbiGuider/phase4.png')
+        },
+        {
+            title: 'לחיצה על פריט ברשימה יוביל אתכם לעמוד התצוגה של אותה רשימה',
+            sorce: require('../images/NewbiGuider/phase7.png')
+        },
+        {
+            title: 'בעמוד יצירת רשימה תוכלו להוסיף פריטים ע"י לחיצה על כפתור "הוסף פריט", לשמור ולבטל שינויים ברשימה',
+            sorce: require('../images/NewbiGuider/phase5.png')
+        },
+        {
+            title: 'עבור כל פריט חדש שנוצר תוכלו לערוך את שם הפריט, כמות והערות נוספות',
+            sorce: require('../images/NewbiGuider/phase6.png')
+        },
+        {
+            title: 'לחיצה כפולה על פריט בעמוד העריכה, תפתח מחדש את האפשרות לערוך את הפריט, משיכה ימינה בשורת הפריט תפתח אפשרות מחיקה של הפריט',
+            sorce: require('../images/NewbiGuider/phase8.png')
+        },
+        {
+            title: 'בעמוד התצוגה של הרשימה תוכלו לעדכן את הפריטים שכבר הוספתם לעגלה - כל מי ששיתפתם איתו את הרשימה יוכל לראות אונליין את העדכון',
+            sorce: require('../images/NewbiGuider/phase9.png')
+        },
+        {
+            title: 'לחיצה על כפתור החץ משמאל לשם הפריט תפתח חלונית עם מידע נוסף אודות הפריט',
+            sorce: require('../images/NewbiGuider/phase10.png')
+        }
     ]
 
     renderView(){
@@ -32,24 +60,25 @@ class NewbiGuider extends React.Component{
         return(
             <View style={styles.containerViewStyle}>            
                 <Image
-                source={this.row[index].sorce}
-                width={50}
-                height={50}
+                    source={this.row[index].sorce}
+                    style={{width:210, height: 275}}
                 />
-                <Text style={{fontSize: 20, marginTop: 10}}>{this.row[index].title}</Text>
+                <Text style={{fontSize: 20, marginTop: 10, writingDirection:'lrt'}}>{this.row[index].title}</Text>
             </View>
 
         )
     }
     goNextView(){
         if(this.state.sildToShow < this.row.length-1){
-            this.setState({sildToShow: this.state.sildToShow +1 })
+            this.setState({ sildToShow: this.state.sildToShow + 1 })
         }
         else{
             this.changeIsFirstToFalse();
         }
     }
-
+    resetSlideView(){
+        this.setState({sildToShow:0});
+    }
     changeIsFirstToFalse(){
         const {currentUser} = firebase.auth();
         firebase.database().ref(`users/${currentUser.uid}/isFirst`)
@@ -67,14 +96,11 @@ class NewbiGuider extends React.Component{
 
     }
 
-    render(){
-        return(
-            <Card>
-                {this.renderView()}
-                <View style={styles.containerStyle}>
-                    {this.renderCircles()}
-                </View>            
+    renderButtons(){
+        if(this.state.sildToShow < this.row.length-1){
+            return(
                 <CardSection>
+
                     <RegularButton
                         externButtonStyle={styles.darkButtonStyle}
                         externTextStyle={{color:WHITE}}
@@ -90,6 +116,37 @@ class NewbiGuider extends React.Component{
                         בסדר הבנתי
                     </RegularButton>
                 </CardSection>
+            );
+        }else{
+            return(
+                <CardSection>
+
+                    <RegularButton
+                        externButtonStyle={styles.darkButtonStyle}
+                        externTextStyle={{color:WHITE}}
+                        onPress={this.changeIsFirstToFalse.bind(this)}
+                    >
+                        בסדר הבנתי
+                    </RegularButton>
+                    <RegularButton
+                        externButtonStyle={styles.whiteButtonStyle}
+                        externTextStyle={{color:DARK_GREEN}}
+                        onPress={this.resetSlideView.bind(this)}
+                    >
+                        חזור להתחלה
+                    </RegularButton>
+                </CardSection>
+            );
+        }
+    }
+    render(){
+        return(
+            <Card>
+                {this.renderView()}
+                <View style={styles.containerStyle}>
+                    {this.renderCircles()}
+                </View>      
+                {this.renderButtons()}
             </Card>
         );
     }

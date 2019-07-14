@@ -18,8 +18,8 @@ class ListViewItem extends React.Component{
         if(this.state.isOpen){
             return(
                 <View style={{flexDirection: 'column',paddingTop: 5, paddingBottom: 5,marginRight: 20}}>
-                    <Text style={styles.extendsTextStyle}>כמות: {this.props.quantity}</Text>
-                    <Text style={styles.extendsTextStyle}>הערה: {this.props.comment}</Text>
+                    {this.props.quantity != '' && <Text style={styles.extendsTextStyle}>כמות: {this.props.quantity}</Text>}
+                    {this.props.comment != '' && <Text style={styles.extendsTextStyle}>הערה: {this.props.comment}</Text>}
                 </View>
             )
         }
@@ -68,11 +68,13 @@ class ListViewItem extends React.Component{
                         {this.renderTitleItem()}
                         {this.renderCheckBox()}
                     </View>
-                    <ImageButtonNoFeedback
-                        {...styles.imageStyle}
-                        source={require('../images/arrow2.png')}
-                        onPress={() => this.setState({isOpen: !this.state.isOpen})}
-                    /> 
+                    {(this.props.quantity != '' || this.props.comment != '') &&
+                        <ImageButtonNoFeedback
+                            {...styles.imageStyle}
+                            source={require('../images/arrow2.png')}
+                            onPress={() => this.setState({isOpen: !this.state.isOpen})}
+                        />             
+                    }
                 </View>
                 {this.renderOpenItem()}
             </CardSection>
