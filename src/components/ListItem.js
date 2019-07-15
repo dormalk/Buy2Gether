@@ -43,7 +43,7 @@ class ListItem extends React.Component{
 const styles = {
     textStyle:{
         flex: 2,
-        fontSize: 22,
+        fontSize: 18,
         textAlign:'left',
         paddingLeft: 20,
         paddingRight: 20

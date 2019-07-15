@@ -18,8 +18,10 @@ class ListViewItem extends React.Component{
         if(this.state.isOpen){
             return(
                 <View style={{flexDirection: 'column',paddingTop: 5, paddingBottom: 5,marginRight: 20}}>
-                    <Text style={styles.extendsTextStyle}>כמות: {this.props.quantity}</Text>
-                    <Text style={styles.extendsTextStyle}>הערה: {this.props.comment}</Text>
+                    {!!this.props.quantity && <Text style={styles.extendsTextStyle}>כמות: {this.props.quantity}</Text>}
+                    {!!this.props.unit && <Text style={styles.extendsTextStyle}>יחידה: {this.props.unit}</Text>}
+                    {!!this.props.comment && <Text style={styles.extendsTextStyle}>הערה: {this.props.comment}</Text>}
+                    {!!this.props.pic && <Image style={{width: 150, height: 150, alignSelf:'center'}} source={{uri:this.props.pic}}/>}
                 </View>
             )
         }
@@ -68,11 +70,13 @@ class ListViewItem extends React.Component{
                         {this.renderTitleItem()}
                         {this.renderCheckBox()}
                     </View>
-                    <ImageButtonNoFeedback
-                        {...styles.imageStyle}
-                        source={require('../images/arrow2.png')}
-                        onPress={() => this.setState({isOpen: !this.state.isOpen})}
-                    /> 
+                    {(!!this.props.quantity || !!this.props.unit || !!this.props.comment || !!this.props.pic) &&
+                        <ImageButtonNoFeedback
+                            {...styles.imageStyle}
+                            source={require('../images/arrow2.png')}
+                            onPress={() => this.setState({isOpen: !this.state.isOpen})}
+                        />
+                    } 
                 </View>
                 {this.renderOpenItem()}
             </CardSection>
@@ -87,8 +91,8 @@ const styles = {
     itemTopContainerStyle:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
         paddingRight: 10,
         paddingLeft: 10
     },
@@ -100,22 +104,22 @@ const styles = {
         dimmension:20
     },
     checkedTitle:{
-        fontSize: 22,
+        fontSize: 18,
         textDecorationLine: 'line-through',
         marginBottom: 2
     },
     uncheckedTitle:{
-        fontSize: 22,
+        fontSize: 18,
         textDecorationLine: 'none',
         marginBottom: 2
     },
     extendsTextStyle:{
-        fontSize: 22,
+        fontSize: 16,
         paddingTop: 2,
         paddingBottom: 2,
         paddingRight: 25,
         paddingLeft: 25,
-        alignText: 'right',
+        textAlign: 'left',
         flexDirection: 'row'
     },
     itemImageStyle:{

@@ -1,6 +1,6 @@
 import React from 'react'
 import {View,Text,ScrollView,Share, Linking} from 'react-native'
-import {Card,CardSection,ImageButton,Confirm} from './common';
+import {Card,CardSection,ImageButton,Confirm, RegularButton} from './common';
 import NevMenu from './NevMenu';
 import {removeList,updateItemAtList,fetchListInterval} from '../actions';
 import {connect} from 'react-redux';
@@ -8,6 +8,7 @@ import {Actions} from 'react-native-router-flux';
 import ListViewItem from './ListViewItem';
 import ShereListModal from './ShereListModal';
 import firebase from '@firebase/app';
+import { DARK_GREEN, WHITE } from './StyleConfig';
 
 class ListView extends React.Component{
 
@@ -61,7 +62,7 @@ class ListView extends React.Component{
 
     itemChanged(update,index){
         this.props.updateItemAtList({lid:this.state.value.key,update,index});
-    }   
+    }
 
     onEditRequet(){
         Actions.editlist({value:this.state.value,src:'view',onRemoveRequest:this.props.onRemoveRequest.bind(this)});
@@ -98,6 +99,15 @@ class ListView extends React.Component{
               }
           })
           .catch((error) => console.log(error));
+    }
+
+    uncheckall(){
+        const update = {
+            checked: false
+        }
+        this.state.value.items.forEach((item,key) => {
+            this.itemChanged(update,key);
+        })
     }
 
     onRenderButtons(){
@@ -147,8 +157,17 @@ class ListView extends React.Component{
                         <Text style={titleTouchableStyle}>{title}</Text>
                         {this.onRenderButtons()}
                     </CardSection>
-                        {this.renderList()}
-                    </Card>     
+                    {this.renderList()}
+                    <CardSection>
+                        <RegularButton
+                            externButtonStyle={{backgroundColor: WHITE, borderColor: DARK_GREEN}}
+                            externTextStyle={{color: DARK_GREEN}}
+                            onPress={this.uncheckall.bind(this)}
+                        >
+                            אפס רשימה
+                        </RegularButton>
+                    </CardSection>    
+                </Card>
                 </ScrollView>  
                 <Confirm
                 visible={this.state.showModal}

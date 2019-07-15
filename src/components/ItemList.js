@@ -143,8 +143,8 @@ const styles = {
         color:'#000',
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
         fontSize: 18,
         textAlign: 'right'
     },

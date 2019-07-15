@@ -61,8 +61,8 @@ class Swipper extends React.Component<Props>{
     }
     renderButtons(){
         return this.state.buttons.map((btn,index) =>(
-            <TouchableOpacity onPress={btn.onPress}>
-                <View key={index} style={[styles.btnsUnit,{backgroundColor:btn.backgroundColor}]}>
+            <TouchableOpacity key={index} onPress={btn.onPress}>
+                <View style={[styles.btnsUnit,{backgroundColor:btn.backgroundColor}]}>
                     <Image source={btn.source} style={styles.btnImg}/>
                 </View>
             </TouchableOpacity>                

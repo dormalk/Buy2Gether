@@ -3,3 +3,4 @@ export const DARK = '#232323';
 export const WHITE = '#fff';
 export const OCEAN_BLUE ='#4e8bed';
 export const DARK_GREY = '#4D4D4D';
+export const DEEP_RED = '#c72c1e';
