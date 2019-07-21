@@ -11,7 +11,7 @@ import '@firebase/storage';
 
 
 export const createList = (newList) => {
-    console.log(newList);
+    if(newList.title == '')  newList.title = 'רשימת קניות';
     return () => {
         return firebase.database().ref(`lists`)
         .push(newList);
@@ -77,6 +77,7 @@ export const resetLists = () => {
 }
 
 export const updateList = ({lid,update}) => {
+    if(update.title == '') update.title == 'רשימת קניות'; 
     return() => {
         firebase.database().ref(`lists/${lid}`)
         .update(update);
@@ -84,6 +85,7 @@ export const updateList = ({lid,update}) => {
 }
 
 export const updateItemAtList = ({lid,update,index}) => {
+    if(update.title == '') update.title == 'פריט חדש'; 
     return() => {
         firebase.database().ref(`lists/${lid}/items/${index}`)
         .update(update);

@@ -23,7 +23,10 @@ import {fatchUser,createUser} from './UserActions';
 import '@firebase/auth';
 import {Actions} from 'react-native-router-flux';
 import { reject } from 'rsvp';
-import {Google} from 'expo';
+import { Google, StandaloneAndroidClientId } from 'expo';
+import * as GoogleSignIn from 'expo-google-sign-in';
+import { AppAuth } from 'expo-app-auth';
+
 
 export const emailChanged = (text) => {
     return{
@@ -87,7 +90,7 @@ export const isLogin = () => {
 
 
 export const logoutUser = () => {
-    return(dispatch) => {
+    return async(dispatch) => {
         dispatch({type:LOGOUT_USER});
         dispatch({type: RESET_LISTS});
         dispatch({type: REMOVE_USER})
@@ -182,32 +185,60 @@ export const recoverySuccess = (dispatch) => {
 //     }
 // }
 
-export const loginWithGoogle = () => {
-    return async (dispatch) => {
-        dispatch({type:LOGIN_USER_WITH_GOOGLE});
-        const googleUser = await Google.logInAsync({
-            behavior: 'web',
-            androidClientId:'307713454797-88id6bfq67dptl9qaqfaj8593vugutr1.apps.googleusercontent.com',
-            scopes:['profile','email']
-        })
-        if(googleUser.type === 'success'){
-            var credential = firebase.auth.GoogleAuthProvider.credential(
-                googleUser.idToken,
-                googleUser.accessToken
-            );
 
-            firebase.auth().signInWithCredential(credential)
-            .then((user) => {
-                dispatch(fatchUser());
+export const loginWithGoogle = (googleUser) => {
+
+    return (dispatch) => {
+        var credential = firebase.auth.GoogleAuthProvider.credential(
+            googleUser.idToken,
+            googleUser.accessToken
+        );
+
+        firebase.auth().signInWithCredential(credential)
+        .then((user) => {
+            firebase.database().ref(`users/${user.uid}`)
+            .once('value',snapshot => {
+                if(snapshot.exists())
+                    dispatch(fatchUser());
+                else
+                    dispatch(createUser());
                 loginSuccess(dispatch,user);
-                dispatch(createUser());
-            })
-            .catch(() => {});
-        }
-        else{
-        }
+            });
+        })
+        .catch((message) => {
+            alert('login Error:'+message)
+        });        
     }
 }
+
+
+
+// export const loginWithGoogle = () => {
+//     return async (dispatch) => {
+//         dispatch({type:LOGIN_USER_WITH_GOOGLE});
+//         const googleUser = await Google.logInAsync({
+//             //behavior: 'web',
+//             androidClientId:'307713454797-88id6bfq67dptl9qaqfaj8593vugutr1.apps.googleusercontent.com',
+//             scopes:['profile','email']
+//         })
+//         if(googleUser.type === 'success'){
+//             var credential = firebase.auth.GoogleAuthProvider.credential(
+//                 googleUser.idToken,
+//                 googleUser.accessToken
+//             );
+
+//             firebase.auth().signInWithCredential(credential)
+//             .then((user) => {
+//                 dispatch(fatchUser());
+//                 loginSuccess(dispatch,user);
+//                 dispatch(createUser());
+//             })
+//             .catch(() => {});
+//         }
+//         else{
+//         }
+//     }
+// }
 
 // export const loginWithGoogle = () => {
 //     return(dispatch) => {

@@ -19,7 +19,8 @@ class ListsPage extends React.Component{
             userlist:[],
             sheredlist:[],
             isLoading: this.props.isLoading || false,
-            isFirst: false
+            isFirst: false,
+            isFirst2: false,
         }
         this.handelGetUrl = this.handelGetUrl.bind(this);
         props.resetLists();
@@ -49,6 +50,14 @@ class ListsPage extends React.Component{
             if(isFirst == undefined) isFirst = true;            
             this.setState({isFirst});
         });
+
+        firebase.database().ref(`users/${currentUser.uid}/isFirst2`)
+        .on('value', (snapshot) =>{
+            var isFirst2 = snapshot.val();
+            if(isFirst2 == undefined) isFirst2 = true;            
+            this.setState({isFirst2});
+        });
+
     }
     componentWillUnmount(){
         Linking.removeEventListener('url', this.handelGetUrl);
@@ -160,7 +169,7 @@ class ListsPage extends React.Component{
     }
 
     renderPageRouter(){
-        if(!this.state.isFirst){
+        if(!this.state.isFirst && !this.state.isFirst2){
             if(this.state.isLoading){
                 return this.renderloaidng();
             }
@@ -168,9 +177,12 @@ class ListsPage extends React.Component{
                 return this.renderPage();
             }
         }
-        if(this.state.isFirst){
+        if(this.state.isFirst || this.state.isFirst2){
             return <NewbiGuider
                         onFinish={() => this.setState({isFirst: false})}
+                        onFinish2={() => this.setState({isFirst2: false})}
+                        isFirst = {this.state.isFirst}
+                        isFirst2 = {this.state.isFirst2}
                     />
         }
 
@@ -182,9 +194,9 @@ class ListsPage extends React.Component{
 }
 
 const mapStateToProps = ({user,lists}) => {
-    const {email,ulist,slist,isFirst} = user;
+    const {email,ulist,slist,isFirst,isFirst2} = user;
     const {userlist,sheredlist} = lists;
-    return {email,ulist,slist,userlist,sheredlist,isFirst};
+    return {email,ulist,slist,userlist,sheredlist,isFirst,isFirst2};
 }
 
 

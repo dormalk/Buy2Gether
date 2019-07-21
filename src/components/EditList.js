@@ -19,6 +19,25 @@ class EditList extends React.Component{
             items: this.props.value.items || []
         }
         this.autoPlus = false;
+        this.imageDeleteList = [];
+    }
+
+    addToDeleteList(imageId){
+        if(!this.imageDeleteList.includes(imageId))
+            this.imageDeleteList.push(imageId);
+    }
+
+    deleteAllImages(){
+        this.imageDeleteList.forEach((item) => {
+            try{
+                firebase.storage().ref().child(item).delete()
+                .then(() => console.log('delete success!'))
+                .catch((error) => console.log(error))
+            }
+            catch{
+                console.log('error with delete')
+            }
+        })
     }
 
     renderList(){
@@ -66,13 +85,17 @@ class EditList extends React.Component{
     }
 
     onListTitleChanged(title){
-        if(title.length <= 15)
+        if(title.length <= 16)
             this.setState({title})
     }
 
-    onItemUpdate(index,{title,quantity,comment}){
+    onItemUpdate(index,{title,quantity,comment,unit,pic,imageId}){
         var items = this.state.items;
-        items[index] = {title,quantity,comment};
+        if(items[index].imageId != imageId){
+            this.addToDeleteList(imageId);
+        }
+        if(title == '') title = 'ללא שם';
+        items[index] = {title,quantity,comment,unit,pic,imageId};
         this.setState({items:[...items]}); 
     }
 
@@ -89,15 +112,18 @@ class EditList extends React.Component{
     }
 
     onSaveList(){
+        this.deleteAllImages();
         var itemList = this.state.items.filter((item) => item.title != '');
+        var title = this.state.title;
+        if(title.length === 0) title = 'רשימה חדשה'; 
         const update = {
-            title: this.state.title,
+            title,
             items: itemList
         }
         this.props.updateList({lid: this.props.value.key, update})
         if(this.props.src!=undefined)
             Actions.listview({value:this.props.value,onRemoveRequest:this.props.onRemoveRequest.bind(this),shered:false});
-        else 
+        else
             Actions.listpage();
     }
     
@@ -200,7 +226,8 @@ const styles = {
         textAlign: 'center',
         alignSelf: 'center',
         marginTop: 10,
-        width: 200
+        width: 200,
+        height: 35
     }
 }
 

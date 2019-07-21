@@ -15,44 +15,65 @@ class NewbiGuider extends React.Component{
     row=[
         {
             title: 'תפריט ניווט ראשי הכולל שני עמודים - תצוגה והוספה, הכפתור הימני ביותר הינו כפתור ניתוק',
-            sorce: require('../images/NewbiGuider/phase1.png')
+            sorce: require('../images/NewbiGuider/phase1.png'),
+            changed: false
         },
         {
             title: 'עמוד התצוגה מכיל שני רשימות - הראשונה: רשימות שיצרתם',
-            sorce: require('../images/NewbiGuider/phase2.png')
+            sorce: require('../images/NewbiGuider/phase2.png'),
+            changed: false
         },
         {
             title: 'הרשימה השניה תכיל רשימות שהוספת באמצעות קישור שיתוף',
-            sorce: require('../images/NewbiGuider/phase3.png')
+            sorce: require('../images/NewbiGuider/phase3.png'),
+            changed: false
         },
         {
             title: 'לצד כל פריט ברשימה ישנו תפריט אפשרויות המכיל את האפשרויות: שיתוף, עריכה ומחיקה',
-            sorce: require('../images/NewbiGuider/phase4.png')
+            sorce: require('../images/NewbiGuider/phase4.png'),
+            changed: false
         },
         {
             title: 'לחיצה על פריט ברשימה יוביל אתכם לעמוד התצוגה של אותה רשימה',
-            sorce: require('../images/NewbiGuider/phase7.png')
+            sorce: require('../images/NewbiGuider/phase7.png'),
+            changed: false
         },
         {
             title: 'בעמוד יצירת רשימה תוכלו להוסיף פריטים ע"י לחיצה על כפתור "הוסף פריט", לשמור ולבטל שינויים ברשימה',
-            sorce: require('../images/NewbiGuider/phase5.png')
+            sorce: require('../images/NewbiGuider/phase5.png'),
+            changed: false
         },
         {
             title: 'עבור כל פריט חדש שנוצר תוכלו לערוך את שם הפריט, כמות והערות נוספות',
-            sorce: require('../images/NewbiGuider/phase6.png')
+            sorce: require('../images/NewbiGuider/phase6.png'),
+            changed: true
+        },
+        {
+            title: 'במידת הצורך ניתן לצלם תמונה של הפריט בלחיצה על כפתור המצלמה',
+            sorce: require('../images/NewbiGuider/phase12.png'),
+            changed: true
         },
         {
             title: 'לחיצה כפולה על פריט בעמוד העריכה, תפתח מחדש את האפשרות לערוך את הפריט, משיכה ימינה בשורת הפריט תפתח אפשרות מחיקה של הפריט',
-            sorce: require('../images/NewbiGuider/phase8.png')
+            sorce: require('../images/NewbiGuider/phase8.png'),
+            changed: false
         },
         {
             title: 'בעמוד התצוגה של הרשימה תוכלו לעדכן את הפריטים שכבר הוספתם לעגלה - כל מי ששיתפתם איתו את הרשימה יוכל לראות אונליין את העדכון',
-            sorce: require('../images/NewbiGuider/phase9.png')
+            sorce: require('../images/NewbiGuider/phase9.png'),
+            changed: false
         },
         {
             title: 'לחיצה על כפתור החץ משמאל לשם הפריט תפתח חלונית עם מידע נוסף אודות הפריט',
-            sorce: require('../images/NewbiGuider/phase10.png')
-        }
+            sorce: require('../images/NewbiGuider/phase10.png'),
+            changed: true
+        },
+        {
+            title: 'בסיום הקניות - תוכלו לאפס את הרשימה ע"י לחיצה על כפתור "אפס רשימה"',
+            sorce: require('../images/NewbiGuider/phase11.png'),
+            changed: true
+        },
+
     ]
 
     renderView(){
@@ -63,11 +84,12 @@ class NewbiGuider extends React.Component{
                     source={this.row[index].sorce}
                     style={{width:210, height: 275}}
                 />
-                <Text style={{fontSize: 20, marginTop: 10, writingDirection:'lrt'}}>{this.row[index].title}</Text>
+                <Text style={{fontSize: 16, marginTop: 10, writingDirection:'lrt'}}>{this.row[index].title}</Text>
             </View>
 
         )
     }
+
     goNextView(){
         if(this.state.sildToShow < this.row.length-1){
             this.setState({ sildToShow: this.state.sildToShow + 1 })
@@ -79,11 +101,15 @@ class NewbiGuider extends React.Component{
     resetSlideView(){
         this.setState({sildToShow:0});
     }
+
     changeIsFirstToFalse(){
         const {currentUser} = firebase.auth();
         firebase.database().ref(`users/${currentUser.uid}/isFirst`)
         .set(false);
+        firebase.database().ref(`users/${currentUser.uid}/isFirst2`)
+        .set(false);
         this.props.onFinish()
+        this.props.onFinish2()
     }
 
     renderCircles(){
@@ -139,6 +165,15 @@ class NewbiGuider extends React.Component{
             );
         }
     }
+
+    componentWillMount(){
+        if(!this.props.isFirst){
+            if(this.props.isFirst2){
+                this.row = this.row.filter((value) => value.changed == true);
+            }    
+        }
+    }
+
     render(){
         return(
             <Card>

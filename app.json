@@ -3,7 +3,7 @@
     "name": "קונים ביחד",
     "slug": "Buy2Gether",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "scheme":"buy2gether",
     "platforms": [
       "ios",
@@ -23,11 +23,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "example.expo.googlesignin",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "307713454797-94u804ljjrcve8ggrnjheq63kdkgnh6v.apps.googleusercontent.com",
+        }
+      }
     },
     "android": {
       "package": "com.dormalka.buy2gether",
-      "permissions": [],
+      "permissions": ["CAMERA"],
+      "googleServicesFile": "./google-services.json",
+      "config":{
+        "googleSignIn":{
+          "certificateHash": "AB:2C:D4:D8:B0:F5:C4:77:40:1D:BD:4C:9E:F0:64:76:92:68:3B:CF"
+        }
+      },
       "versionCode": 12
     }
   }

@@ -1,23 +1,41 @@
 import React from 'react';
 import {Text,TouchableOpacity,View} from 'react-native';
 import {Card,CardSection,Input,RegularButton,Spinner,Link, Welcoming,BottonWithIcon} from './common';
-import { emailChanged,passwordChanged,loginUser,isLogin,agreeShereList,loginWithGoogle } from '../actions';
+import { emailChanged,passwordChanged,loginUser,isLogin,agreeShereList,loginWithGoogle,initGoogleSign } from '../actions';
 import { connect } from 'react-redux';
 import {DARK_GREEN,WHITE,OCEAN_BLUE} from './StyleConfig';
 import {Actions} from 'react-native-router-flux';
 import RecoveryPasswordModal from './RecoveryPasswordModal';
 import NewbiGuider from './NewbiGuider';
 import firebase from '@firebase/app';
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 class LoginForm extends React.Component{
     state = {
         showModal: false,
         welcome: this.props.welcome || true,
-        googleLogin: false, 
+        googleLogin: this.props.googleloading || false, 
     }    
 
     checkLogin = setInterval(() => this.props.isLogin(),500);
     
+
+    componentWillMount(){
+        this.initGoogleSign();
+    }
+
+    async initGoogleSign(){
+        try {
+            await GoogleSignIn.initAsync({ clientId: "307713454797-94u804ljjrcve8ggrnjheq63kdkgnh6v.apps.googleusercontent.com" });
+        } catch ({ message }) {
+            alert('GoogleSignIn.initAsync(): ' + message);
+        }    
+    }
+
+    async loginWithGoogle(){
+
+    }
+
     onEmailChange(email){
         this.props.emailChanged(email);
     }
@@ -72,12 +90,24 @@ class LoginForm extends React.Component{
         );
     }
 
-    onGooleLogin(){
-        this.props.loginWithGoogle();
+    onGooleLogin = async() => {
+        this.setState({googleLogin:true})
+        try {
+            await GoogleSignIn.askForPlayServicesAsync();
+            const {type,user} = await GoogleSignIn.signInAsync();
+            if (type === 'success') {
+                var {idToken,accessToken} = await user.refreshAuth();
+                await this.props.loginWithGoogle({idToken,accessToken});
+
+            }
+        } catch ({ message }) {
+//            alert('login: Error:' + message);
+//            this.setState({googleLogin:false})
+        }
     }
 
     renderLoginGoogleButton(){
-        if(this.props.googleloading)
+        if(this.state.googleLogin)
             return( <Spinner size="large"/>);
         else{
             return(
@@ -141,6 +171,11 @@ class LoginForm extends React.Component{
         );
     }
 
+    componentWillUpdate(nextState,nextProps){
+        if(this.state.googleLogin != nextProps.googleloading){
+            this.setState({googleLogin:nextProps.googleloading});
+        }
+    }
     render(){
         {setTimeout(() => {
             clearInterval(this.checkLogin);
