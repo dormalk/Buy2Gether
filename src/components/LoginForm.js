@@ -32,10 +32,6 @@ class LoginForm extends React.Component{
         }    
     }
 
-    async loginWithGoogle(){
-
-    }
-
     onEmailChange(email){
         this.props.emailChanged(email);
     }
@@ -97,12 +93,11 @@ class LoginForm extends React.Component{
             const {type,user} = await GoogleSignIn.signInAsync();
             if (type === 'success') {
                 var {idToken,accessToken} = await user.refreshAuth();
-                await this.props.loginWithGoogle({idToken,accessToken});
+                var {email} = user;
+                this.props.loginWithGoogle({idToken,accessToken,email});
 
             }
         } catch ({ message }) {
-//            alert('login: Error:' + message);
-//            this.setState({googleLogin:false})
         }
     }
 
@@ -172,7 +167,7 @@ class LoginForm extends React.Component{
     }
 
     componentWillUpdate(nextState,nextProps){
-        if(this.state.googleLogin != nextProps.googleloading){
+        if(nextProps.googleloading != undefined && this.state.googleLogin != nextProps.googleloading){
             this.setState({googleLogin:nextProps.googleloading});
         }
     }

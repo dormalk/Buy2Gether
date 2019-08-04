@@ -13,11 +13,10 @@ import {Actions} from 'react-native-router-flux';
 import {isLogin} from './AuthActions';
 
 
-export const createUser = ({email=''}) => {
-    const {currentUser} = firebase.auth();
+export const createUser = (user,email='') => {
     return(dispatch) => {
-        if(currentUser){
-            firebase.database().ref(`users/${currentUser.uid}/`)
+        if(user){
+            firebase.database().ref(`users/${user.uid}/`)
             .set({email:email,isFirst:true})
             .then(() => dispatch({type:CREATE_USER, payload:email}));    
         }
