@@ -117,7 +117,7 @@ git clone https://github.com/dormalk/Buy2Gether
 ```sh
 npm install
 ```
-3. Download Expo app form AppStore|Playstore
+3. Download Expo app form AppStore|Playstore <br/>
 [Expo on PlayStore](https://play.google.com/store/apps/details?id=host.exp.exponent)
 [Expo on AppStore](https://apps.apple.com/us/app/expo-client/id982107779)
 4. Run app from CMD and open it on Expo app
