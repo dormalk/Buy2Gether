@@ -124,6 +124,7 @@ npm install
 ```sh
 npm run start
 ```
+5. Follow the instruction on the opened web page
 
 
 <!-- USAGE EXAMPLES -->
