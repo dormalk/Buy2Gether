@@ -38,10 +38,10 @@
     <img src="https://lh3.googleusercontent.com/xrXpkLr51Xu4OVZpSgJKY4hDbkCd-_9h2HLsj3PBZ-JhL7fNy6gHYxelY7A3s4FBFA=s180-rw" alt="Logo" width="150" height="150">
   </a>
 
-  <h3 align="center">ALPHA BLOG</h3>
+  <h3 align="center">BUY TOGETTER</h3>
 
   <p align="center">
-    Ruby on rails project - Blog based on ruby development language
+    Supermarkets shopping application - from now, you can do your shopping at supermarket more faster and more effectivly then evers!
     <br />
     <a href="https://github.com/dormalk/Buy2Gether"><strong>Explore the docs »</strong></a>
     <br />
