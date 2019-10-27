@@ -76,10 +76,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[product-screenshot1]
-[product-screenshot2]
-[product-screenshot3]
-[product-screenshot4]
+![product-screenshot][product-screenshot1]
+![product-screenshot][product-screenshot2]
+![product-screenshot][product-screenshot3]
+![product-screenshot][product-screenshot4]
 
 
 
