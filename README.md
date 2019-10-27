@@ -65,10 +65,10 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
-* [Roadmap](#roadmap)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 <!--* [Contributing](#contributing)
+* [Roadmap](#roadmap)
 * [License](#license)-->
 
 
@@ -140,13 +140,13 @@ npm run start
 
 
 <!-- ROADMAP -->
-## Roadmap
+<!--## Roadmap
 
 See the [open issues](https://github.com/dormalk/Buy2Gether/issues) for a list of proposed features (and known issues).
 
 
 
-<!-- CONTRIBUTING
+CONTRIBUTING
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
