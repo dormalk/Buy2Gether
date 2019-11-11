@@ -199,7 +199,7 @@ Project Link: [https://github.com/dormalk/Buy2Gether](https://github.com/dormalk
 [license-shield]: https://img.shields.io/github/license/dormalk/Buy2Gether.svg?style=flat-square
 [license-url]: https://github.com/dormalk/Buy2Gether/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: www.linkedin.com/in/dor-malka-444b94116/
+[linkedin-url]: http://www.linkedin.com/in/dor-malka-444b94116/
 [product-screenshot1]: https://lh3.googleusercontent.com/u3V5utG39lJ7anP-nnGVTAHagV5uP9bHm9xz06JpBzLuqGvSiYZEKRCZnTN4dO9aEj_X=w720-h310-rw
 [product-screenshot2]: https://lh3.googleusercontent.com/r47a09QWNO_cQ4H_f2NYaZ7r7kRtllo_DO_5yeX7kvdwk4s-hQ0MLCRXagaaSYS-BSs=w720-h310-rw
 [product-screenshot3]: https://lh3.googleusercontent.com/jpbEpUdCpqp_04HPyA9RZ6N8fXBkC6UYaQvZkwsNupBPBEP6-_ruUGbp1KnpKdl_LyTy=w720-h310-rw
